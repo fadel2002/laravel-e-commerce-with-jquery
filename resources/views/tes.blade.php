@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-    auth
+
 </div>
 @endsection
