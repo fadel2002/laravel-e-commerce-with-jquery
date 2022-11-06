@@ -18,9 +18,18 @@
 
             <!-- Email Address -->
             <div>
-                <x-input-label for="email" :value="__('Email')" />
 
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <div class="grid grid-cols-2">
+                    <x-input-label for="email" :value="__('Email')" />
+
+                    <a class=" text-sm text-green-600 hover:text-green-900 left flex justify-end"
+                        href="{{ route('login') }}">
+                        {{ __('Back To Login') }}
+                    </a>
+                </div>
+
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                    required autofocus />
 
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
