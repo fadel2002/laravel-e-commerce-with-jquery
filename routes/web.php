@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/tes', function () {
-    return view('tes');
-})->name('tes');
+Route::get('/tes', [TesController::class, 'index'])->name('tes');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

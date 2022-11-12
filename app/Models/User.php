@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama_user',
+        'name',
         'tipe_user', // 1 user, 2 admin
         'no_telp_user',
         'email',
@@ -43,4 +43,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function transaksis(){
+        return $this->hasMany(Transaksi::class, 'id_user', 'id_user');
+    }  
 }
