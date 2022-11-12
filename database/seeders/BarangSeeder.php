@@ -37,7 +37,7 @@ class BarangSeeder extends Seeder
 
         Barang::create([
             'stok_barang' => 30,
-            'harga_barang' => 7500,
+            'harga_barang' => 6000,
             'nama_barang' => 'Kecap',
             'deskripsi_barang' => 'Garam 250 ml',
             'nama_kategori' => 'makanan',
