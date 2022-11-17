@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ShopController extends Controller
 {
     public function index()
     {
@@ -20,6 +20,6 @@ class HomeController extends Controller
 
         // dd($data);
 
-        return view('home.index', compact('data'));
+        return view('shop.index', compact('data'));
     }
 }
