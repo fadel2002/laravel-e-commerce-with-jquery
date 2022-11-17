@@ -11,7 +11,8 @@
     @forelse ($data['produk'] as $produk)
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="product__item">
-            <div class="product__item__pic set-bg" data-setbg="{{$produk->gambar_barang}}">
+            <div class="product__item__pic set-bg" style="background-image: url('{{$produk->gambar_barang}}');"
+                data-setbg="{{$produk->gambar_barang}}">
                 <ul class="product__item__pic__hover">
                     <li>
                         <a href="#"><i class="fa fa-heart"></i></a>
