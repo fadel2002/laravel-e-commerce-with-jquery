@@ -10,16 +10,49 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $data = [];
+        try {
+            $data = [];
 
-        $data = [
-            'kategori' => ['Food', 'Drink', 'Cigar'],
-            'user' => User::get(),
-            'produk' => Barang::get(),
-        ];
+            $data = [
+                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'user' => User::get(),
+                'produk' => Barang::paginate(2),
+                // 'produk' => Barang::paginate(2)->transform(function ($item, $key) {
+                //     return [
+                //         'id' => $item->id_barang,
+                //         'nama' => $item->nama_barang,
+                //         'harga' => $item->harga_barang,
+                //         'gambar' => $item->gambar_barang,
+                //     ];
+                // }),
+                'produk_terbaru' => Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
+                    return [
+                        'id' => $item->id_barang,
+                        'nama' => $item->nama_barang,
+                        'harga' => $item->harga_barang,
+                        'gambar' => $item->gambar_barang,
+                    ];
+                }),
+            ];
 
-        // dd($data);
+            // dd($data);
+            
+            return view('shop.index', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
 
-        return view('shop.index', compact('data'));
+    public function getMoreData(Request $request)
+    {
+        if ($request->ajax()){
+            $data = [];
+            $data = [
+                'produk' => Barang::paginate(2)
+            ];
+            return view('shop.pagination', compact('data'))->render();
+        }    
     }
 }

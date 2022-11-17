@@ -10,15 +10,22 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $data = [];
+        try {
+            $data = [];
 
-        $data = [
-            'kategori' => ['Food', 'Drink', 'Cigar'],
-            'user' => User::get(),
-            'produk' => Barang::get(),
-        ];
-        // dd($data);
-
-        return view('contact.index', compact('data'));
+            $data = [
+                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'user' => User::where('tipe_user', 2)->first(),
+                'produk' => Barang::get(),
+            ];
+    
+            // dd($data);
+            
+            return view('contact.index', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
     }
 }

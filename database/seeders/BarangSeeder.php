@@ -20,9 +20,10 @@ class BarangSeeder extends Seeder
             'harga_barang' => 15000,
             'nama_barang' => 'Gula',
             'deskripsi_barang' => 'Gula 1 kg',
-            'nama_kategori' => 'makanan',
-            'gambar_barang' => 'public/img',
+            'nama_kategori' => 'Food',
+            'gambar_barang' => 'images/products/1.jpg',
             'berat_barang' => 1000, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString()
         ]);
 
         Barang::create([
@@ -30,19 +31,65 @@ class BarangSeeder extends Seeder
             'harga_barang' => 7500,
             'nama_barang' => 'Garam',
             'deskripsi_barang' => 'Garam 1 kg',
-            'nama_kategori' => 'makanan',
-            'gambar_barang' => 'public/img',
+            'nama_kategori' => 'Food',
+            'gambar_barang' => 'images/products/3.jpg',
             'berat_barang' => 1000, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->toDateTimeString()
         ]);
 
         Barang::create([
             'stok_barang' => 30,
             'harga_barang' => 6000,
-            'nama_barang' => 'Kecap',
+            'nama_barang' => 'Kecap1',
             'deskripsi_barang' => 'Garam 250 ml',
-            'nama_kategori' => 'makanan',
-            'gambar_barang' => 'public/img',
+            'nama_kategori' => 'Drink',
+            'gambar_barang' => 'images/products/2.jpg',
             'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->toDateTimeString()
+        ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap2',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Drink',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->toDateTimeString()
+        ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap3',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Drink',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
+        ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap4',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Cigar',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
+        ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap5',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Cigar',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
         ]);
     }
 }

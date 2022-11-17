@@ -10,16 +10,22 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data = [];
+        try {
+            $data = [];
 
-        $data = [
-            'kategori' => ['Food', 'Drink', 'Cigar'],
-            'user' => User::get(),
-            'produk' => Barang::get(),
-        ];
-
-        // dd($data);
-
-        return view('home.index', compact('data'));
+            $data = [
+                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'user' => User::get(),
+                'produk' => Barang::get(),
+            ];
+    
+            // dd($data);
+            
+            return view('home.index', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
     }
 }
