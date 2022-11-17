@@ -16,7 +16,7 @@ class ShopController extends Controller
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'user' => User::get(),
-                'produk' => Barang::paginate(2),
+                'produk' => Barang::paginate(6),
                 // 'produk' => Barang::paginate(2)->transform(function ($item, $key) {
                 //     return [
                 //         'id' => $item->id_barang,
@@ -50,7 +50,7 @@ class ShopController extends Controller
         if ($request->ajax()){
             $data = [];
             $data = [
-                'produk' => Barang::paginate(2)
+                'produk' => Barang::paginate(6)
             ];
             return view('shop.pagination', compact('data'))->render();
         }    

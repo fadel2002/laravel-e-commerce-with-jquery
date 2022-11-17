@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg col-md">
             <div class="filter__found">
-                <h6><span>16</span> Products found</h6>
+                <h6><span>{{count($data['produk'])}}</span> Products found</h6>
             </div>
         </div>
     </div>
@@ -37,9 +37,3 @@
 
 </div>
 {!! $data['produk']->links() !!}
-<div class="product__pagination">
-    <a href="#">1</a>
-    <a href="#">2</a>
-    <a href="#">3</a>
-    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-</div>
