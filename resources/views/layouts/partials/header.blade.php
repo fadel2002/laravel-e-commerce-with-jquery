@@ -120,7 +120,7 @@
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li class="contact-menu"><a href="./contact.html">Contact</a></li>
+                        <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
             </div>
