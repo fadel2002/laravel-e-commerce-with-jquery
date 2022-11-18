@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/shop/detail/{id}', [ShopController::class, 'detail'])->name('detail');
 Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('get-more-data');
 Route::get('shop/search-on-type', [ShopController::class, 'searchOnType'])->name('searchOnType');
 Route::get('shop/search', [ShopController::class, 'search'])->name('search');

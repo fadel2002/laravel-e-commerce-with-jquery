@@ -9,26 +9,48 @@ use Illuminate\Http\Request;
 class ShopController extends Controller
 {
     use \App\Http\Traits\AdminTrait;
+    use \App\Http\Traits\ShopTrait;
     
     public function index()
     {
         try {
             $data = [];
 
+            $data = $this->getBarang();
+
+            // dd($data);
+            
+            return view('shop.index', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    public function detail($id)
+    {
+        try {
+            $data = [];
+
+            $barang = Barang::where('id_barang', $id)->first();
+            $barang_mirip = Barang::where('nama_kategori', $barang->nama_kategori)->limit(4)->get();
+
+            // dd($barang_mirip);
+
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'admin' => $this->dataAdmin(),
-                'user' => User::get(),
-                'produk' => Barang::paginate(6),
-                // 'produk' => Barang::paginate(2)->transform(function ($item, $key) {
-                //     return [
-                //         'id' => $item->id_barang,
-                //         'nama' => $item->nama_barang,
-                //         'harga' => $item->harga_barang,
-                //         'gambar' => $item->gambar_barang,
-                //     ];
-                // }),
-                'produk_terbaru' => Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
+                'produk' => [
+                    'id' => $barang->id_barang,
+                    'nama' => $barang->nama_barang,
+                    'harga' => $barang->harga_barang,
+                    'gambar' => $barang->gambar_barang,
+                    'deskripsi' => $barang->deskripsi_barang,
+                    'berat' => $barang->berat_barang,
+                    'stok' => $barang->stok_barang,
+                ],
+                'produk_mirip' => $barang_mirip->transform(function ($item, $key) {
                     return [
                         'id' => $item->id_barang,
                         'nama' => $item->nama_barang,
@@ -40,7 +62,7 @@ class ShopController extends Controller
 
             // dd($data);
             
-            return view('shop.index', compact('data'));
+            return view('shop.detail', compact('data'));
             
         }catch (ModelNotFoundException $exception) {
             

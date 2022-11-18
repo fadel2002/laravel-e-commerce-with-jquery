@@ -55,7 +55,7 @@
                                 <div class="latest-product__slider owl-carousel">
                                     <div class="latest-prdouct__slider__item">
                                         @foreach ($data['produk_terbaru'] as $produk_terbaru)
-                                        <a href="{{$produk_terbaru['id']}}" class="latest-product__item">
+                                        <a href="/shop/detail/{{$produk_terbaru['id']}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img src="{{asset($produk_terbaru['gambar'])}}" alt="" />
                                             </div>
@@ -71,7 +71,7 @@
                                     <div class="latest-prdouct__slider__item">
                                         @foreach ($data['produk_terbaru'] as $produk_terbaru)
                                         @if ($loop->index > 2)
-                                        <a href="{{$produk_terbaru['id']}}" class="latest-product__item">
+                                        <a href="/shop/detail/{{$produk_terbaru['id']}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img src="{{asset($produk_terbaru['gambar'])}}" alt="" />
                                             </div>
