@@ -39,8 +39,14 @@
                                     <input type="hidden" name="kategori" value="{{$kategori}}">
                                     <li><button style="border: none; background-color: white">{{ $kategori }}</button>
                                     </li>
+
                                 </form>
                                 @endforeach
+                                @error('kategori')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </ul>
                         </div>
                         <div class="sidebar__item">

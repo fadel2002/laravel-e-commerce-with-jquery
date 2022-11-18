@@ -98,7 +98,6 @@ class ShopController extends Controller
     {
         if ($request->filled('kategori')){
             try {
-
                 if ($request->kategori == "*"){
                     $barang = Barang::paginate(6);
                     $barang_terbaru = Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
