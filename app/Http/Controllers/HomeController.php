@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    use \App\Http\Traits\AdminTrait;
+
     public function index()
     {
         try {
@@ -15,7 +17,7 @@ class HomeController extends Controller
 
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
-                'admin' => User::where('tipe_user', 2)->first(),
+                'admin' => $this->dataAdmin(),
                 'user' => User::get(),
                 'produk' => Barang::orderBy('harga_barang', 'desc')->limit(8)->get(),
             ];

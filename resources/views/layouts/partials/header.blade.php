@@ -30,7 +30,6 @@
                     <li><a href="./shop-details.html">Shop Details</a></li>
                     <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                     <li><a href="./checkout.html">Check Out</a></li>
-                    <li><a href="./blog-details.html">Blog Details</a></li>
                 </ul>
             </li>
             <li><a href="{{route('contact')}}">Contact</a></li>
@@ -45,7 +44,7 @@
     </div>
     <div class="humberger__menu__contact">
         <ul>
-            <li><i class="fa fa-envelope"></i>{{$data['admin']->email}}</li>
+            <li><i class="fa fa-envelope"></i>{{$data['admin']['email']}}</li>
             <li>Free Shipping for all Order of $99</li>
         </ul>
     </div>
@@ -60,7 +59,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i>{{$data['admin']->email}}</li>
+                            <li><i class="fa fa-envelope"></i>{{$data['admin']['email']}}</li>
                             <li>Free Shipping for all Order of $99</li>
                         </ul>
                     </div>
@@ -98,7 +97,6 @@
                                 <li><a href="./shop-details.html">Shop Details</a></li>
                                 <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
@@ -171,10 +169,10 @@
                     </div>
                     <div class="hero__search__phone">
                         <div class="hero__search__phone__icon">
-                            <a href="tel:{{$data['admin']->no_telp_user}}"><i class="fa fa-phone text-success"></i></a>
+                            <a href="tel:{{$data['admin']['no_telp']}}"><i class="fa fa-phone text-success"></i></a>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>{{$data['admin']->no_telp_user}}</h5>
+                            <h5>{{$data['admin']['no_telp']}}</h5>
                             <span>support 24/7 time</span>
                         </div>
                     </div>

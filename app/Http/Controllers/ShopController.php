@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    use \App\Http\Traits\AdminTrait;
+    
     public function index()
     {
         try {
@@ -15,7 +17,7 @@ class ShopController extends Controller
 
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
-                'admin' => User::where('tipe_user', 2)->first(),
+                'admin' => $this->dataAdmin(),
                 'user' => User::get(),
                 'produk' => Barang::paginate(6),
                 // 'produk' => Barang::paginate(2)->transform(function ($item, $key) {
@@ -74,7 +76,7 @@ class ShopController extends Controller
             try {
                 $data = [];
                 $data = [
-                    'admin' => User::where('tipe_user', 2)->first(),
+                    'admin' => $this->dataAdmin(),
                     'kategori' => ['Food', 'Drink', 'Cigar'],
                     'produk' => Barang::where('nama_barang','LIKE','%'.$request->search."%")->paginate(6),
                     'produk_terbaru' => Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
@@ -122,7 +124,7 @@ class ShopController extends Controller
                 }
                 $data = [];
                 $data = [
-                    'admin' => User::where('tipe_user', 2)->first(),
+                    'admin' => $this->dataAdmin(),
                     'kategori' => ['Food', 'Drink', 'Cigar'],
                     'produk' => $barang,
                     'produk_terbaru' => $barang_terbaru,

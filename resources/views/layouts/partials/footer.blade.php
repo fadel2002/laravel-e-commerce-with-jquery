@@ -8,9 +8,9 @@
                         <a href="./index.html"><img src="img/logo.png" alt="logo" width="80px"></a>
                     </div>
                     <ul>
-                        <li>Address: 60-49 Road 11378 New York</li>
-                        <li>Phone: +65 11.188.888</li>
-                        <li>Email: hello@colorlib.com</li>
+                        <li>Address: {{$data['admin']['alamat']}}</li>
+                        <li>Phone: {{$data['admin']['no_telp']}}</li>
+                        <li>Email: {{$data['admin']['email']}}</li>
                     </ul>
                 </div>
             </div>

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    use \App\Http\Traits\AdminTrait;
+    
     public function index()
     {
         try {
@@ -15,7 +17,7 @@ class ContactController extends Controller
 
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
-                'admin' => User::where('tipe_user', 2)->first(),
+                'admin' => $this->dataAdmin(),
                 'produk' => Barang::get(),
             ];
     
