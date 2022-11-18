@@ -10,7 +10,7 @@
                     <div class="breadcrumb__text">
                         <h2>Contact Us</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="{{route('home')}}">Home</a>
                             <span>Contact Us</span>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="contact__widget">
                         <span class="icon_phone"></span>
                         <h4>Phone</h4>
-                        <p>{{$data['user']->no_telp_user}}</p>
+                        <p>{{$data['admin']->no_telp_user}}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -49,7 +49,7 @@
                     <div class="contact__widget">
                         <span class="icon_mail_alt"></span>
                         <h4>Email</h4>
-                        <p>{{$data['user']->email}}</p>
+                        <p>{{$data['admin']->email}}</p>
                     </div>
                 </div>
             </div>

@@ -15,8 +15,9 @@ class HomeController extends Controller
 
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
+                'admin' => User::where('tipe_user', 2)->first(),
                 'user' => User::get(),
-                'produk' => Barang::get(),
+                'produk' => Barang::orderBy('harga_barang', 'desc')->limit(8)->get(),
             ];
     
             // dd($data);

@@ -104,7 +104,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="{{route('home')}}"><img src="img/logo.png" alt="logo" width="60px"></a>
+                    <a href="{{route('home')}}"><img src="{{asset('img/logo.png')}}" alt="logo" width="60px"></a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -149,11 +149,20 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>All departments</span>
+                        <span>All Categories</span>
                     </div>
                     <ul>
+                        <form class="my-2" action="{{route('select-categories')}}">
+                            @csrf
+                            <input type="hidden" name="kategori" value="*">
+                            <li><button style="border: none; background-color: white">All</button></li>
+                        </form>
                         @foreach($data['kategori'] as $kategori)
-                        <li><a href="#">{{ $kategori }}</a></li>
+                        <form class="my-2" action="{{route('select-categories')}}">
+                            @csrf
+                            <input type="hidden" name="kategori" value="{{$kategori}}">
+                            <li><button style="border: none; background-color: white">{{ $kategori }}</button></li>
+                        </form>
                         @endforeach
                     </ul>
                 </div>
@@ -161,13 +170,17 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="#">
-                            <div class="hero__search__categories">
-                                All Categories
-                                <span class="arrow_carrot-down"></span>
-                            </div>
-                            <input type="text" placeholder="What do yo u need?">
+                        <form action="{{route('search')}}">
+                            @csrf
+                            {{-- <input id="search" type="text" name="search" placeholder="What do yo u need?"> --}}
+                            <input type="text" name="search" placeholder="What do yo u need?">
                             <button type="submit" class="site-btn">SEARCH</button>
+
+                            @error('search')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </form>
                     </div>
                     <div class="hero__search__phone">
@@ -175,7 +188,7 @@
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>+65 11.188.888</h5>
+                            <h5>{{$data['admin']->no_telp_user}}</h5>
                             <span>support 24/7 time</span>
                         </div>
                     </div>

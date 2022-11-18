@@ -3,7 +3,7 @@
 @section('content')
 <div>
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+    <section class="breadcrumb-section set-bg" data-setbg="{{asset('img/breadcrumb.jpg')}}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -28,8 +28,18 @@
                         <div class="sidebar__item">
                             <h4>Category</h4>
                             <ul>
-                                @foreach ($data['kategori'] as $kategori)
-                                <li><a href="#">{{$kategori}}</a></li>
+                                <form class="my-2" action="{{route('select-categories')}}">
+                                    @csrf
+                                    <input type="hidden" name="kategori" value="*">
+                                    <li><button style="border: none; background-color: white">All</button></li>
+                                </form>
+                                @foreach($data['kategori'] as $kategori)
+                                <form class="my-2" action="{{route('select-categories')}}">
+                                    @csrf
+                                    <input type="hidden" name="kategori" value="{{$kategori}}">
+                                    <li><button style="border: none; background-color: white">{{ $kategori }}</button>
+                                    </li>
+                                </form>
                                 @endforeach
                             </ul>
                         </div>
@@ -41,7 +51,7 @@
                                         @foreach ($data['produk_terbaru'] as $produk_terbaru)
                                         <a href="{{$produk_terbaru['id']}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="{{$produk_terbaru['gambar']}}" alt="" />
+                                                <img src="{{asset($produk_terbaru['gambar'])}}" alt="" />
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>{{$produk_terbaru['nama']}}</h6>
@@ -57,7 +67,7 @@
                                         @if ($loop->index > 2)
                                         <a href="{{$produk_terbaru['id']}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="{{$produk_terbaru['gambar']}}" alt="" />
+                                                <img src="{{asset($produk_terbaru['gambar'])}}" alt="" />
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>{{$produk_terbaru['nama']}}</h6>

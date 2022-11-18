@@ -15,7 +15,7 @@ class ContactController extends Controller
 
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
-                'user' => User::where('tipe_user', 2)->first(),
+                'admin' => User::where('tipe_user', 2)->first(),
                 'produk' => Barang::get(),
             ];
     

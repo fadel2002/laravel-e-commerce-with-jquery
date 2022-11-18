@@ -16,8 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('get-more-data');
+Route::get('shop/search-on-type', [ShopController::class, 'searchOnType'])->name('searchOnType');
+Route::get('shop/search', [ShopController::class, 'search'])->name('search');
+Route::get('shop/category', [ShopController::class, 'selectCategories'])->name('select-categories');
+
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/tes', [TesController::class, 'index'])->name('tes');

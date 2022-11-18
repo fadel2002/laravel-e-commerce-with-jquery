@@ -49,7 +49,25 @@
                 type: "GET",
                 url: "/shop/produk?page=" + page,
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
+                    $("#table_data_produk").html(data);
+                },
+            });
+        }
+
+        $(document).on("keyup", "#search", function (event) {
+            event.preventDefault();
+            var value = $(this).val();
+            search(value);
+        });
+
+        function search(val) {
+            $.ajax({
+                type: "GET",
+                url: "/shop/search-on-type?page=" + val,
+                data: { search: val },
+                success: function (data) {
+                    // console.log(data);
                     $("#table_data_produk").html(data);
                 },
             });
