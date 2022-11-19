@@ -27,7 +27,7 @@
                     @foreach($data['produk'] as $produk)
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{asset($produk->gambar_barang)}}">
-                            <h5><a href="#">{{$produk->nama_barang}}</a></h5>
+                            <h5><a href="./shop/detail/{{$produk->id_barang}}">{{$produk->nama_barang}}</a></h5>
                         </div>
                     </div>
                     @endforeach
@@ -68,7 +68,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">{{$produk->nama_barang}}</a></h6>
+                            <h6><a href="./shop/detail/{{$produk->id_barang}}">{{$produk->nama_barang}}</a></h6>
                             <h5>Rp {{$produk->harga_barang}}</h5>
                         </div>
                     </div>
