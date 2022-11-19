@@ -26,7 +26,7 @@
                 </ul>
             </div>
             <div class="product__item__text">
-                <h6><a href="{{$produk->id_barang}}">{{$produk->nama_barang}}</a></h6>
+                <h6><a href="./shop/detail/{{$produk->id_barang}}">{{$produk->nama_barang}}</a></h6>
                 <h5>Rp {{$produk->harga_barang}}</h5>
             </div>
         </div>

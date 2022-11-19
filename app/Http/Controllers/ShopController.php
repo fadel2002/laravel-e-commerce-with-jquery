@@ -33,11 +33,9 @@ class ShopController extends Controller
         try {
             $data = [];
 
-            $barang = Barang::where('id_barang', $id)->first();
+            $barang = Barang::with('gambarBarangs')->where('id_barang', $id)->first();
             $barang_mirip = Barang::where('nama_kategori', $barang->nama_kategori)->limit(4)->get();
-
-            // dd($barang_mirip);
-
+    
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'admin' => $this->dataAdmin(),
@@ -49,6 +47,11 @@ class ShopController extends Controller
                     'deskripsi' => $barang->deskripsi_barang,
                     'berat' => $barang->berat_barang,
                     'stok' => $barang->stok_barang,
+                    'gambar_lain' => $barang->gambarBarangs->transform(function ($item, $key) {
+                                        return [
+                                            'gambar' => $item->gambar_barang,
+                                        ];  
+                                    }),
                 ],
                 'produk_mirip' => $barang_mirip->transform(function ($item, $key) {
                     return [
@@ -60,7 +63,9 @@ class ShopController extends Controller
                 }),
             ];
 
-            // dd($data);
+            // return response()->json([
+            //     'data' => $data['produk'],
+            // ], 200);
             
             return view('shop.detail', compact('data'));
             

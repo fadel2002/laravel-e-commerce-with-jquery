@@ -20,4 +20,8 @@ class Barang extends Model
         'gambar_barang',
         'berat_barang',
     ];
+
+    public function gambarBarangs(){
+        return $this->hasMany(GambarBarang::class, 'id_barang');
+    }  
 }

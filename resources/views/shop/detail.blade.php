@@ -29,6 +29,14 @@
                             <img class="product__details__pic__item--large" src="{{asset($data['produk']['gambar'])}}"
                                 alt="">
                         </div>
+                        @if (count($data['produk']['gambar_lain']))
+                        <div class="product__details__pic__slider owl-carousel">
+                            @foreach ($data['produk']['gambar_lain'] as $gambar_lain)
+                            <img data-imgbigurl="{{asset($gambar_lain['gambar'])}}"
+                                src="{{asset($gambar_lain['gambar'])}}" alt="">
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
