@@ -75,6 +75,7 @@ class ShopController extends Controller
         }
     }
 
+    // ajax
     public function getMoreData(Request $request)
     {
         if ($request->ajax()){
@@ -86,6 +87,7 @@ class ShopController extends Controller
         }    
     }
     
+    // ajax
     public function searchOnType(Request $request)
     {
         if ($request->ajax()){
@@ -123,6 +125,7 @@ class ShopController extends Controller
         }    
     }
 
+    // ajax
     public function searchAjax(Request $request)
     {
         if ($request->ajax()){
@@ -177,5 +180,13 @@ class ShopController extends Controller
                 return back()->withError($exception->getMessage())->withInput();
             }
         }      
+    }
+
+    /* POST REQUEST */
+    public function addToCart(Request $request){
+        $data = [];
+        return response()->json([
+            'data' => $request->all(),
+        ], 200);
     }
 }

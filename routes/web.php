@@ -17,13 +17,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-Route::get('/shop/detail/{id}', [ShopController::class, 'detail'])->name('shop.detail');
-Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('shop.get-more-data');
-// Route::get('shop/search-on-type', [ShopController::class, 'searchOnType'])->name('searchOnType');
-// Route::get('shop/search', [ShopController::class, 'search'])->name('shop.search');
-Route::get('shop/search-ajax', [ShopController::class, 'searchAjax'])->name('shop.search-ajax');
-Route::get('shop/category', [ShopController::class, 'selectCategories'])->name('shop.select-categories');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/shop/detail/{id}', [ShopController::class, 'detail'])->name('shop.detail');
+    Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('shop.get-more-data');
+    // Route::get('shop/search-on-type', [ShopController::class, 'searchOnType'])->name('searchOnType');
+    // Route::get('shop/search', [ShopController::class, 'search'])->name('shop.search');
+    Route::get('shop/search-ajax', [ShopController::class, 'searchAjax'])->name('shop.search-ajax');
+    Route::get('shop/category', [ShopController::class, 'selectCategories'])->name('shop.select-categories');
+    // Route::post('shop/add-to-cart-ajax', [ShopController::class, 'addToCartAjax'])->name('shop.add-to-cart-ajax');
+    Route::post('shop/add-to-cart', [ShopController::class, 'addToCart'])->name('shop.add-to-cart');
+});
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 

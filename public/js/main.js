@@ -113,6 +113,41 @@
                 },
             });
         }
+
+        $(document).on("click", "#ajax-add-to-cart", function (event) {
+            event.preventDefault();
+            var search = $("input[name=search]").val();
+            // console.log(search);
+            ajaxSearch(search);
+        });
+
+        function ajaxSearch(val) {
+            $.ajax({
+                type: "GET",
+                url: "/shop/search-ajax?page=" + val,
+                data: { search: val },
+                success: function (data) {
+                    // console.log(data);
+                    $("#table_data_produk").html(data);
+                    swal({
+                        title: "Done!",
+                        text: "Search Success",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).catch(function (timeout) {});
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    swal({
+                        title: "Interupt!",
+                        text: "Search Failed",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                },
+            });
+        }
     });
 
     /*------------------
@@ -298,11 +333,21 @@
     proQty.on("click", ".qtybtn", function () {
         var $button = $(this);
         var oldValue = $button.parent().find("input").val();
+        var maxValue = $("input[name=maxQuantity]").val();
+
         if ($button.hasClass("inc")) {
-            var newVal = parseFloat(oldValue) + 1;
+            // console.log(oldValue, maxValue);
+            // console.log(oldValue < maxValue);
+            if (parseFloat(oldValue) < parseFloat(maxValue)) {
+                var newVal = parseFloat(oldValue) + 1;
+            } else {
+                newVal = parseFloat(maxValue);
+            }
         } else {
             // Don't allow decrementing below zero
-            if (oldValue > 0) {
+            if (parseFloat(oldValue) > parseFloat(maxValue)) {
+                newVal = parseFloat(maxValue);
+            } else if (oldValue > 0) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
                 newVal = 0;
