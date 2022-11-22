@@ -28,13 +28,13 @@
                         <div class="sidebar__item">
                             <h4>Category</h4>
                             <ul>
-                                <form class="my-2" action="{{route('select-categories')}}">
+                                <form class="my-2" action="{{route('shop.select-categories')}}">
                                     @csrf
                                     <input type="hidden" name="kategori" value="*">
                                     <li><button style="border: none; background-color: white">All</button></li>
                                 </form>
                                 @foreach($data['kategori'] as $kategori)
-                                <form class="my-2" action="{{route('select-categories')}}">
+                                <form class="my-2" action="{{route('shop.select-categories')}}">
                                     @csrf
                                     <input type="hidden" name="kategori" value="{{$kategori}}">
                                     <li><button style="border: none; background-color: white">{{ $kategori }}</button>

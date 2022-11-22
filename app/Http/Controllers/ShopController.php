@@ -16,7 +16,7 @@ class ShopController extends Controller
         try {
             $data = [];
 
-            $data = $this->getBarang();
+            $data = $this->getAllBarangWithPaginate();
 
             // dd($data);
             
@@ -116,6 +116,22 @@ class ShopController extends Controller
                     }),
                 ];
                 return view('shop.index', compact('data'));
+            }catch (ModelNotFoundException $exception) {
+            
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        }    
+    }
+
+    public function searchAjax(Request $request)
+    {
+        if ($request->ajax()){
+            try {
+                $data = [];
+                $data = [
+                    'produk' => Barang::where('nama_barang','LIKE','%'.$request->search."%")->paginate(6),
+                ];
+                return view('shop.pagination', compact('data'))->render();
             }catch (ModelNotFoundException $exception) {
             
                 return back()->withError($exception->getMessage())->withInput();

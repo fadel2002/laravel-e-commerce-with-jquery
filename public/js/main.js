@@ -38,6 +38,12 @@
     });
 
     $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+
         $(document).on("click", ".pagination a", function (event) {
             event.preventDefault();
             var page = $(this).attr("href").split("page=")[1];
@@ -55,16 +61,35 @@
             });
         }
 
-        $(document).on("keyup", "#search", function (event) {
+        // $(document).on("keyup", "#search", function (event) {
+        //     event.preventDefault();
+        //     var value = $(this).val();
+        //     searchOnType(value);
+        // });
+
+        // function searchOnType(val) {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/shop/search-on-type?page=" + val,
+        //         data: { search: val },
+        //         success: function (data) {
+        //             // console.log(data);
+        //             $("#table_data_produk").html(data);
+        //         },
+        //     });
+        // }
+
+        $(document).on("click", "#ajax-search", function (event) {
             event.preventDefault();
-            var value = $(this).val();
-            search(value);
+            var search = $("input[name=search]").val();
+            // console.log(search);
+            ajaxSearch(search);
         });
 
-        function search(val) {
+        function ajaxSearch(val) {
             $.ajax({
                 type: "GET",
-                url: "/shop/search-on-type?page=" + val,
+                url: "/shop/search-ajax?page=" + val,
                 data: { search: val },
                 success: function (data) {
                     // console.log(data);

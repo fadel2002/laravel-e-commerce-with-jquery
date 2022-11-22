@@ -24,7 +24,7 @@
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="{{route('home')}}">Home</a></li>
-            <li><a href="{{route('shop')}}">Shop</a></li>
+            <li><a href="{{route('shop.index')}}">Shop</a></li>
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
                     <li><a href="./shoping-cart.html">Shoping Cart</a></li>
@@ -90,7 +90,7 @@
                 <nav class="header__menu">
                     <ul>
                         <li class="home-menu"><a href="{{route('home')}}">Home</a></li>
-                        <li class="shop-menu"><a href="{{route('shop')}}">Shop</a></li>
+                        <li class="shop-menu"><a href="{{route('shop.index')}}">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li><a href="./shoping-cart.html">Shoping Cart</a></li>
@@ -119,6 +119,7 @@
 <!-- Header Section End -->
 
 <!-- Hero Section Begin -->
+@if (Route::is('shop.*')))
 <section class="hero hero-normal">
     <div class="container">
         <div class="row">
@@ -129,13 +130,13 @@
                         <span>All Categories</span>
                     </div>
                     <ul>
-                        <form class="my-2" action="{{route('select-categories')}}">
+                        <form class="my-2" action="{{route('shop.select-categories')}}">
                             @csrf
                             <input type="hidden" name="kategori" value="*">
                             <li><button style="border: none; background-color: white">All</button></li>
                         </form>
                         @foreach($data['kategori'] as $kategori)
-                        <form class="my-2" action="{{route('select-categories')}}">
+                        <form class="my-2" action="{{route('shop.select-categories')}}">
                             @csrf
                             <input type="hidden" name="kategori" value="{{$kategori}}">
                             <li><button style="border: none; background-color: white">{{ $kategori }}</button></li>
@@ -152,11 +153,13 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="{{route('search')}}">
+                        {{-- <form action="{{route('search')}}"> --}}
+                        <form>
                             @csrf
                             {{-- <input id="search" type="text" name="search" placeholder="What do yo u need?"> --}}
                             <input type="text" name="search" placeholder="What do yo u need?">
-                            <button type="submit" class="site-btn">SEARCH</button>
+                            {{-- <button type="submit" class="site-btn">SEARCH</button> --}}
+                            <button type="submit" id="ajax-search" class="site-btn">SEARCH</button>
 
                             @error('search')
                             <span class="invalid-feedback" role="alert">
@@ -179,4 +182,5 @@
         </div>
     </div>
 </section>
+@endif
 <!-- Hero Section End -->

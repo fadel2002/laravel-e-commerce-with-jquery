@@ -2,11 +2,12 @@
 
 namespace App\Http\Traits;
 use App\Models\Barang;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Auth;
 
 trait ShopTrait {
-    private function getBarang(){
+    private function getAllBarangWithPaginate(){
         $data = [];
         $data = [
             'kategori' => ['Food', 'Drink', 'Cigar'],
