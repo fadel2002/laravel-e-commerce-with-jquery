@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\Transaksi;
+use App\Models\DetailTransaksi;
 use Illuminate\Http\Request;
+use Auth;
 
 class ShopController extends Controller
 {
@@ -32,10 +35,20 @@ class ShopController extends Controller
     {
         try {
             $data = [];
-
+            
             $barang = Barang::with('gambarBarangs')->where('id_barang', $id)->first();
             $barang_mirip = Barang::where('nama_kategori', $barang->nama_kategori)->limit(4)->get();
-    
+
+            $cart = Transaksi::where([['id_user', Auth::user()->id_user], ['status_transaksi', 0]])->first();
+            $cart_history = 0;
+            
+            if ($cart){
+                $detail_barang = DetailTransaksi::where([['id_barang', $id],['id_transaksi', $cart->id_transaksi]])->first();
+                if ($detail_barang){
+                    $cart_history = $detail_barang->kuantitas_barang;
+                }
+            }
+
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'admin' => $this->dataAdmin(),
@@ -47,6 +60,7 @@ class ShopController extends Controller
                     'deskripsi' => $barang->deskripsi_barang,
                     'berat' => $barang->berat_barang,
                     'stok' => $barang->stok_barang,
+                    'kuantitas_sementara' => $cart_history,
                     'gambar_lain' => $barang->gambarBarangs->transform(function ($item, $key) {
                                         return [
                                             'gambar' => $item->gambar_barang,
@@ -62,10 +76,6 @@ class ShopController extends Controller
                     ];
                 }),
             ];
-
-            // return response()->json([
-            //     'data' => $data['produk'],
-            // ], 200);
             
             return view('shop.detail', compact('data'));
             
@@ -182,11 +192,68 @@ class ShopController extends Controller
         }      
     }
 
+    public function checkout(){
+        try {
+
+        }catch (ModelNotFoundException $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
     /* POST REQUEST */
-    public function addToCart(Request $request){
-        $data = [];
-        return response()->json([
-            'data' => $request->all(),
-        ], 200);
+
+    // ajax
+    public function addToCartAjax(Request $request){
+        if ($request->ajax()){
+            try {
+                $data = [];
+
+                $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', $request->id_user]])->first();
+
+                if ($transaksi){
+                    $detail_transaksi = DetailTransaksi::where([['id_transaksi', $transaksi->id_transaksi],['id_barang', $request->id_barang]])->first();
+                    $total_transaksi = $transaksi->total_transaksi;
+                    if ($detail_transaksi){
+                        $total_transaksi = $total_transaksi - ((int)$detail_transaksi->kuantitas_barang * (int)$request->harga);
+                        if ($request->kuantitas == 0){
+                            $detail_transaksi->delete();
+                        }else {
+                            $detail_transaksi->update([
+                                'kuantitas_barang' => $request->kuantitas,
+                            ]);
+                        }                        
+                    }else{
+                        if ($request->kuantitas > 0){
+                            DetailTransaksi::create([
+                                'id_transaksi' => $transaksi->id_transaksi,
+                                'id_barang' => $request->id_barang,
+                                'kuantitas_barang' => (int)$request->kuantitas,
+                            ]);
+                        }
+                    }
+                    $transaksi->update([
+                        'total_transaksi' => $total_transaksi + ((int)$request->harga * (int)$request->kuantitas),
+                    ]);
+                }else {
+                    $new_transaksi = Transaksi::create([
+                        'total_transaksi' => (int)$request->harga * (int)$request->kuantitas,
+                        'id_user' => (int)$request->id_user,
+                    ]);
+                    if ($request->kuantitas > 0){
+                        DetailTransaksi::create([
+                            'id_transaksi' => (int)$new_transaksi->id_transaksi,
+                            'id_barang' => (int)$request->id_barang,
+                            'kuantitas_barang' => (int)$request->kuantitas,
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'message' => 'Update Success!',
+                ], 200);
+            }catch (ModelNotFoundException $exception) {
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        } 
     }
 }

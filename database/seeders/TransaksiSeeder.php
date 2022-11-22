@@ -18,23 +18,15 @@ class TransaksiSeeder extends Seeder
         Transaksi::create([
             'id_transaksi' => 1,
             'metode_transaksi' => 'bayar ditempat',
-            'total_transaksi' => 15000,
-            'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
+            'total_transaksi' => 30000,
+            'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan Surabaya',
             'id_user' => 2,
         ]);
 
         Transaksi::create([
             'id_transaksi' => 2,
             'metode_transaksi' => 'bayar ditempat',
-            'total_transaksi' => 21000,
-            'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan Surabaya',
-            'id_user' => 2,
-        ]);
-
-        Transaksi::create([
-            'id_transaksi' => 3,
-            'metode_transaksi' => 'bayar ditempat',
-            'total_transaksi' => 28500,
+            'total_transaksi' => 45000,
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 3,
         ]);

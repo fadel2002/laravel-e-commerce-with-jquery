@@ -116,22 +116,32 @@
 
         $(document).on("click", "#ajax-add-to-cart", function (event) {
             event.preventDefault();
-            var search = $("input[name=search]").val();
-            // console.log(search);
-            ajaxSearch(search);
+            var data = [];
+            data[0] = $("input[name=id_barang]").val();
+            data[1] = $("input[name=id_user]").val();
+            data[2] = $("input[name=nama]").val();
+            data[3] = $("input[name=kuantitas]").val();
+            data[4] = $("input[name=harga]").val();
+            // console.log(data);
+            ajaxAddToCart(data);
         });
 
-        function ajaxSearch(val) {
+        function ajaxAddToCart(data) {
             $.ajax({
-                type: "GET",
-                url: "/shop/search-ajax?page=" + val,
-                data: { search: val },
+                type: "POST",
+                url: "/shop/add-to-cart-ajax",
+                data: {
+                    id_barang: data[0],
+                    id_user: data[1],
+                    nama: data[2],
+                    kuantitas: data[3],
+                    harga: data[4],
+                },
                 success: function (data) {
                     // console.log(data);
-                    $("#table_data_produk").html(data);
                     swal({
                         title: "Done!",
-                        text: "Search Success",
+                        text: "Update Success",
                         type: "success",
                         showConfirmButton: false,
                         timer: 1000,
@@ -140,7 +150,7 @@
                 fail: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
-                        text: "Search Failed",
+                        text: "Update Failed",
                         type: "warning",
                         showConfirmButton: false,
                         timer: 1500,

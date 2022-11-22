@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id('id_transaksi');
             $table->string('metode_transaksi')->nullable();
             $table->bigInteger('total_transaksi')->nullable();
-            $table->boolean('status_transaksi')->default(0);
+            // 0 masih dalam cart
+            // 1 sudah checkout atau bayar dan belum diterima user
+            // 2 sudah checkout atau bayar dan sudah diterima user
+            $table->smallInteger('status_transaksi')->default(0); 
             $table->string('alamat_dikirim')->nullable();
             $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade')->nullable();
             $table->timestamps();

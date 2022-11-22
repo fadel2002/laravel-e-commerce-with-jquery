@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
     // Route::get('shop/search', [ShopController::class, 'search'])->name('shop.search');
     Route::get('shop/search-ajax', [ShopController::class, 'searchAjax'])->name('shop.search-ajax');
     Route::get('shop/category', [ShopController::class, 'selectCategories'])->name('shop.select-categories');
-    // Route::post('shop/add-to-cart-ajax', [ShopController::class, 'addToCartAjax'])->name('shop.add-to-cart-ajax');
-    Route::post('shop/add-to-cart', [ShopController::class, 'addToCart'])->name('shop.add-to-cart');
+    Route::post('shop/add-to-cart-ajax', [ShopController::class, 'addToCartAjax'])->name('shop.add-to-cart-ajax');
+    Route::post('shop/checkout', [ShopController::class, 'checkout'])->name('shop.checkout');
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

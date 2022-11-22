@@ -18,7 +18,15 @@
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__auth">
+            @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <a href="{{route('logout')}}" onclick="event.preventDefault(); this.closest('form').submit();"><i
+                        class="fa fa-user"></i> Logout</a>
+            </form>
+            @else
             <a href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
+            @endauth
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
@@ -72,7 +80,16 @@
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                         <div class="header__top__right__auth">
+                            @auth
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a href="{{route('logout')}}"
+                                    onclick="event.preventDefault(); this.closest('form').submit();"><i
+                                        class="fa fa-user"></i> Logout</a>
+                            </form>
+                            @else
                             <a href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
+                            @endauth
                         </div>
                     </div>
                 </div>

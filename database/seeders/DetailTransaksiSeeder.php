@@ -22,31 +22,25 @@ class DetailTransaksiSeeder extends Seeder
         ]);
 
         DetailTransaksi::create([
-            'id_transaksi' => 2,
-            'id_barang' => 1,
-            'kuantitas_barang' => 1,
-        ]);
-
-        DetailTransaksi::create([
-            'id_transaksi' => 2,
+            'id_transaksi' => 1,
             'id_barang' => 3,
             'kuantitas_barang' => 1,
         ]);
 
         DetailTransaksi::create([
-            'id_transaksi' => 3,
+            'id_transaksi' => 2,
             'id_barang' => 1,
             'kuantitas_barang' => 1,
         ]);
 
         DetailTransaksi::create([
-            'id_transaksi' => 3,
+            'id_transaksi' => 2,
             'id_barang' => 2,
             'kuantitas_barang' => 1,
         ]);
 
         DetailTransaksi::create([
-            'id_transaksi' => 3,
+            'id_transaksi' => 2,
             'id_barang' => 3,
             'kuantitas_barang' => 1,
         ]);

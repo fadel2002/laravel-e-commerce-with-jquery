@@ -45,27 +45,22 @@
                         <div class="product__details__price">{{$data['produk']['harga']}}</div>
                         <p>{{$data['produk']['deskripsi']}}</p>
                         <input type="hidden" name="maxQuantity" value="{{$data['produk']['stok']}}">
-                        <form action="{{route('shop.add-to-cart')}}" method="post">
+                        <form>
                             @csrf
-                            {{-- 'id' => $barang->id_barang,
-                    'nama' => $barang->nama_barang,
-                    'harga' => $barang->harga_barang,
-                    'gambar' => $barang->gambar_barang,
-                    'deskripsi' => $barang->deskripsi_barang,
-                    'berat' => $barang->berat_barang,
-                    'stok' => $barang->stok_barang, --}}
-                            <input type="hidden" name="id" value="{{$data['produk']['id']}}">
+                            <input type="hidden" name="id_barang" value="{{$data['produk']['id']}}">
+                            <input type="hidden" name="id_user" value="{{Auth::user()->id_user}}">
                             <input type="hidden" name="nama" value="{{$data['produk']['nama']}}">
                             <input type="hidden" name="harga" value="{{$data['produk']['harga']}}">
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="number" name="kuantitas" value="1" min="0"
+                                        <input type="number" name="kuantitas"
+                                            value="{{$data['produk']['kuantitas_sementara']}}" min="0"
                                             max="{{$data['produk']['stok']}}">
                                     </div>
                                 </div>
                             </div>
-                            <button class="primary-btn btn text-white">ADD TO CART</button>
+                            <button id="ajax-add-to-cart" class="primary-btn btn text-white">UPDATE CART</button>
                         </form>
                         <ul>
                             <li><b>Availability</b> <span>{{$data['produk']['stok']}}</span></li>
