@@ -94,6 +94,22 @@
                 success: function (data) {
                     // console.log(data);
                     $("#table_data_produk").html(data);
+                    swal({
+                        title: "Done!",
+                        text: "Search Success",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).catch(function (timeout) {});
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    swal({
+                        title: "Interupt!",
+                        text: "Search Failed",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
                 },
             });
         }

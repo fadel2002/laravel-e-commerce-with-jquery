@@ -5,7 +5,7 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__about__logo col-5">
-                        <a href="./index.html"><img src="img/logo.png" alt="logo" width="80px"></a>
+                        <a href="./index.html"><img src="{{asset('img/logo.png')}}" alt="logo" width="80px"></a>
                     </div>
                     <ul>
                         <li>Address: {{$data['admin']['alamat']}}</li>
@@ -65,7 +65,7 @@
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>
-                    <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                    <div class="footer__copyright__payment"><img src="{{asset('img/payment-item.png')}}" alt=""></div>
                 </div>
             </div>
         </div>

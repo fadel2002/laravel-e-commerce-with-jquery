@@ -119,7 +119,7 @@
 <!-- Header Section End -->
 
 <!-- Hero Section Begin -->
-@if (Route::is('shop.*')))
+@if (Route::is('shop.*'))
 <section class="hero hero-normal">
     <div class="container">
         <div class="row">
