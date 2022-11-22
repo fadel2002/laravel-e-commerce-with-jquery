@@ -16,4 +16,12 @@ class DetailTransaksi extends Model
         'id_barang',
         'kuantitas_barang',
     ];
+
+    public function transaksi(){
+        return $this->belongsTo(Transaksi::class);
+    } 
+
+    public function barang(){
+        return $this->hasOne(Barang::class, 'id_barang', 'id_barang');
+    }  
 }

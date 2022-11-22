@@ -24,4 +24,8 @@ class Barang extends Model
     public function gambarBarangs(){
         return $this->hasMany(GambarBarang::class, 'id_barang');
     }  
+
+    public function detailTransaksi(){
+        return $this->belongsTo(DetailTransaksi::class);
+    } 
 }

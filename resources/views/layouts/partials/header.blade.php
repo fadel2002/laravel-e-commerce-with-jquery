@@ -35,8 +35,8 @@
             <li><a href="{{route('shop.index')}}">Shop</a></li>
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
-                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                    <li><a href="./checkout.html">Check Out</a></li>
+                    <li><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
+                    <li><a href="{{route('shop.checkout')}}">Check Out</a></li>
                 </ul>
             </li>
             <li><a href="{{route('contact')}}">Contact</a></li>
@@ -110,8 +110,8 @@
                         <li class="shop-menu"><a href="{{route('shop.index')}}">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
+                                <li><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
+                                <li><a href="{{route('shop.checkout')}}">Check Out</a></li>
                             </ul>
                         </li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>

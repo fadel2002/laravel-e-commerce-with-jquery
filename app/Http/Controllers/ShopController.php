@@ -194,7 +194,32 @@ class ShopController extends Controller
 
     public function checkout(){
         try {
+            $data = [];
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'kategori' => ['Food', 'Drink', 'Cigar'],
+            ];            
+            return view('shop.checkout', compact('data'));
+        }catch (ModelNotFoundException $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
 
+    public function cart(){
+        try {
+            $data = [];
+            $transaksi = Transaksi::with('detailTransaksis.barang')->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            
+            // return response()->json([
+            //     'data' => $transaksi,
+            // ], 200);
+            
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'produk' => $transaksi,
+            ];            
+            return view('shop.cart', compact('data'));
         }catch (ModelNotFoundException $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
