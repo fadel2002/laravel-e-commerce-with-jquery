@@ -38,7 +38,7 @@
                             <tbody>
                                 <input type="hidden" name="id_transaksi" value="{{$data['produk']['id_transaksi']}}">
                                 @forelse($data['produk']['detailTransaksis'] as $produk)
-                                <tr>
+                                <tr id="item-{{$produk['id_detail_transaksi']}}">
                                     <td class="shoping__cart__item">
                                         <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px" alt="">
                                         <h5>{{$produk['barang']['nama_barang']}}</h5>
@@ -58,10 +58,14 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        Rp {{ $produk['barang']['harga_barang'] * $produk['kuantitas_barang']  }}
+                                        <span id="span-transaksi-per-data-{{ $loop->index }}">
+                                            Rp {{ $produk['barang']['harga_barang'] * $produk['kuantitas_barang']  }}
+                                        </span>
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                        <a id="{{$produk['id_detail_transaksi']}}" class="ajax-delete-item" href="">
+                                            <span class="icon_close"></span>
+                                        </a>
                                     </td>
                                 </tr>
                                 @empty

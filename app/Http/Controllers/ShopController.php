@@ -145,8 +145,15 @@ class ShopController extends Controller
         if ($request->ajax()){
             try {
                 $data = [];
+
+                if ($request->filled('kategori')){
+                    $barang = Barang::where([['nama_barang','LIKE','%'.$request->search."%"],['nama_kategori','LIKE','%'.$request->kategori."%"]])->paginate(6);
+                }else{
+                    $barang = Barang::where([['nama_barang','LIKE','%'.$request->search."%"]])->paginate(6);
+                }
+
                 $data = [
-                    'produk' => Barang::where([['nama_barang','LIKE','%'.$request->search."%"],['nama_kategori','LIKE','%'.$request->kategori."%"]])->paginate(6),
+                    'produk' => $barang,
                 ];
                 return view('shop.pagination', compact('data'))->render();
             }catch (ModelNotFoundException $exception) {
@@ -226,7 +233,7 @@ class ShopController extends Controller
     public function cart(){
         try {
             $data = [];
-            $transaksi = Transaksi::with('detailTransaksis.barang')->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            $transaksi = Transaksi::with(['detailTransaksis' => function($query){$query->orderBy('id_detail_transaksi');}, 'detailTransaksis.barang'])->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
             if (!$transaksi) {
                 $transaksi['detailTransaksis'] = [];
                 $transaksi['total_transaksi'] = 0;
@@ -312,9 +319,8 @@ class ShopController extends Controller
         
         if ($request->ajax()){
             try {
-                $data = [];
-
                 $transaksi = Transaksi::where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user]])->first();
+                $sum_per_data = [];
                 $sum = 0;
 
                 for($i=0; $i<count($request->updated_data); $i++){
@@ -332,6 +338,7 @@ class ShopController extends Controller
                     ]);
 
                     $sum = $sum + ( $kuantitas_baru *  $dt->barang->harga_barang );
+                    $sum_per_data[$i] = $kuantitas_baru *  $dt->barang->harga_barang;
                 }
                 
                 $transaksi->update([
@@ -341,7 +348,37 @@ class ShopController extends Controller
                 return response()->json([
                     'data' => [
                         'total_transaksi' => $sum,
+                        'transaksi_per_data' => $sum_per_data
                     ]
+                ], 200);
+                
+            }catch (ModelNotFoundException $exception) {
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        } 
+    }
+
+    public function deleteItem(Request $request){        
+        if ($request->ajax()){
+            try {
+                
+                $transaksi = Transaksi::where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user]])->first();
+
+                $data = DetailTransaksi::with(['barang:id_barang,harga_barang'])->where('id_detail_transaksi', $request->id_dt)->first();
+
+                $sum = $data->barang->harga_barang * $data->kuantitas_barang;
+
+                $transaksi->update([
+                    'total_transaksi' => ($transaksi->total_transaksi - $sum),
+                ]);
+
+                $bool = $data->delete();
+                
+                return response()->json([
+                    'data' => [
+                       'status' => $bool,
+                       'total_transaksi' => $transaksi->total_transaksi,
+                    ],
                 ], 200);
                 
             }catch (ModelNotFoundException $exception) {

@@ -54,6 +54,10 @@
             let page = $(this).attr("href").split("page=")[1];
             let search = $("input[name=oldSearch]").val();
             let kategori = $("input[name=oldKategori]").val();
+            if (kategori == "*") {
+                kategori = "";
+            }
+            // console.log("p" + page, "s" + search, "k" + kategori);
             fetch_data(search, page, kategori);
         });
 
@@ -86,6 +90,46 @@
         //         },
         //     });
         // }
+
+        $(document).on("click", ".ajax-delete-item", function (event) {
+            event.preventDefault();
+            let id_dt = $(this).attr("id");
+            var id_transaksi = $("input[name=id_transaksi]").val();
+            // console.log(id);
+            ajaxDeleteItem(id_dt, id_transaksi);
+        });
+
+        function ajaxDeleteItem(id_dt, id_transaksi) {
+            $.ajax({
+                type: "POST",
+                url: "/shop/delete-item-ajax",
+                data: { id_dt: id_dt, id_transaksi: id_transaksi },
+                success: function (data) {
+                    // console.log(data.data);
+                    data = data.data;
+                    $("#item-" + id_dt).remove();
+                    $("#span-total-transaksi").text(
+                        "Rp " + data["total_transaksi"]
+                    );
+                    swal({
+                        title: "Done!",
+                        text: "Search Success",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).catch(function (timeout) {});
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    swal({
+                        title: "Interupt!",
+                        text: "Search Failed",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                },
+            });
+        }
 
         $(document).on("click", "#ajax-search", function (event) {
             event.preventDefault();
@@ -191,7 +235,16 @@
                 data: { updated_data: data, id_transaksi: id },
                 success: function (data) {
                     data = data.data;
-                    console.log($("#span-total-transaksi").text());
+                    // console.log(data);
+                    for (
+                        let i = 0;
+                        i < data["transaksi_per_data"].length;
+                        i++
+                    ) {
+                        $("#span-transaksi-per-data-" + i).text(
+                            "Rp " + data["transaksi_per_data"][i]
+                        );
+                    }
                     $("#span-total-transaksi").text(
                         "Rp " + data["total_transaksi"]
                     );
