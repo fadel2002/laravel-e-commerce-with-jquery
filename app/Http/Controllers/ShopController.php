@@ -146,7 +146,7 @@ class ShopController extends Controller
             try {
                 $data = [];
                 $data = [
-                    'produk' => Barang::where('nama_barang','LIKE','%'.$request->search."%")->paginate(6),
+                    'produk' => Barang::where([['nama_barang','LIKE','%'.$request->search."%"],['nama_kategori','LIKE','%'.$request->kategori."%"]])->paginate(6),
                 ];
                 return view('shop.pagination', compact('data'))->render();
             }catch (ModelNotFoundException $exception) {
@@ -187,10 +187,14 @@ class ShopController extends Controller
                 if (!$transaksi){
                     $transaksi['total_transaksi'] = 0;
                 }
+                // return response()->json([
+                //     'data' => $barang,
+                // ], 200);
                 $data = [
                     'admin' => $this->dataAdmin(),
                     'kategori' => ['Food', 'Drink', 'Cigar'],
                     'produk' => $barang,
+                    'current_kategori' => $request->kategori,
                     'produk_terbaru' => $barang_terbaru,
                     'total_transaksi' => $transaksi['total_transaksi'],
                 ];
@@ -301,57 +305,45 @@ class ShopController extends Controller
     }
 
     public function updateCart(Request $request){
-        return response()->json([
-            'data' => 'Update Success!',
-        ], 200);
+        // return response()->json([
+        //     'id' => $request->id_transaksi,
+        //     'data' => $request->updated_data
+        // ], 200);
         
         if ($request->ajax()){
             try {
                 $data = [];
 
-                $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', $request->id_user]])->first();
+                $transaksi = Transaksi::where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user]])->first();
+                $sum = 0;
 
-                if ($transaksi){
-                    $detail_transaksi = DetailTransaksi::where([['id_transaksi', $transaksi->id_transaksi],['id_barang', $request->id_barang]])->first();
-                    $total_transaksi = $transaksi->total_transaksi;
-                    if ($detail_transaksi){
-                        $total_transaksi = $total_transaksi - ((int)$detail_transaksi->kuantitas_barang * (int)$request->harga);
-                        if ($request->kuantitas == 0){
-                            $detail_transaksi->delete();
-                        }else {
-                            $detail_transaksi->update([
-                                'kuantitas_barang' => $request->kuantitas,
-                            ]);
-                        }                        
-                    }else{
-                        if ($request->kuantitas > 0){
-                            DetailTransaksi::create([
-                                'id_transaksi' => $transaksi->id_transaksi,
-                                'id_barang' => $request->id_barang,
-                                'kuantitas_barang' => (int)$request->kuantitas,
-                            ]);
-                        }
+                for($i=0; $i<count($request->updated_data); $i++){
+                    $id_dt = $request->updated_data[$i]['id_detail_transaksi'];
+                    $kuantitas_baru = $request->updated_data[$i]['kuantitas_baru'];
+
+                    $dt = DetailTransaksi::with(['barang:id_barang,harga_barang'])->where('id_detail_transaksi', $id_dt)->first();
+                    
+                    if ($kuantitas_baru == 0){
+                        $dt->delete();
                     }
-                    $transaksi->update([
-                        'total_transaksi' => $total_transaksi + ((int)$request->harga * (int)$request->kuantitas),
+
+                    $dt->update([
+                        'kuantitas_barang' => $kuantitas_baru,
                     ]);
-                }else {
-                    $new_transaksi = Transaksi::create([
-                        'total_transaksi' => (int)$request->harga * (int)$request->kuantitas,
-                        'id_user' => (int)$request->id_user,
-                    ]);
-                    if ($request->kuantitas > 0){
-                        DetailTransaksi::create([
-                            'id_transaksi' => (int)$new_transaksi->id_transaksi,
-                            'id_barang' => (int)$request->id_barang,
-                            'kuantitas_barang' => (int)$request->kuantitas,
-                        ]);
-                    }
+
+                    $sum = $sum + ( $kuantitas_baru *  $dt->barang->harga_barang );
                 }
-
+                
+                $transaksi->update([
+                    'total_transaksi' => $sum,
+                ]);
+                
                 return response()->json([
-                    'message' => 'Update Success!',
+                    'data' => [
+                        'total_transaksi' => $sum,
+                    ]
                 ], 200);
+                
             }catch (ModelNotFoundException $exception) {
                 return back()->withError($exception->getMessage())->withInput();
             }

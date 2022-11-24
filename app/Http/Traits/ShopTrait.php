@@ -26,6 +26,7 @@ trait ShopTrait {
                     'gambar' => $item->gambar_barang,
                 ];
             }),
+            'current_kategori' => '*',
             'total_transaksi' => $transaksi['total_transaksi'],
         ];
         return $data;

@@ -26,6 +26,6 @@ class Barang extends Model
     }  
 
     public function detailTransaksi(){
-        return $this->belongsTo(DetailTransaksi::class);
+        return $this->belongsTo(DetailTransaksi::class, 'id_barang');
     } 
 }

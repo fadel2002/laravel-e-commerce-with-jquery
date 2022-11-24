@@ -175,6 +175,8 @@
                             @csrf
                             {{-- <input id="search" type="text" name="search" placeholder="What do yo u need?"> --}}
                             <input type="text" name="search" placeholder="What do yo u need?">
+                            <input type="hidden" name="oldSearch" value="">
+                            <input type="hidden" name="oldKategori" value="{{$data['current_kategori']}}">
                             {{-- <button type="submit" class="site-btn">SEARCH</button> --}}
                             <button type="submit" id="ajax-search" class="site-btn">SEARCH</button>
 

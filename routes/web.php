@@ -20,12 +20,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware('auth')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/shop/detail/{id}', [ShopController::class, 'detail'])->name('shop.detail');
-    Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('shop.get-more-data');
+    // Route::get('shop/produk', [ShopController::class, 'getMoreData'])->name('shop.get-more-data');
     // Route::get('shop/search-on-type', [ShopController::class, 'searchOnType'])->name('searchOnType');
     // Route::get('shop/search', [ShopController::class, 'search'])->name('shop.search');
     Route::get('shop/search-ajax', [ShopController::class, 'searchAjax'])->name('shop.search-ajax');
     Route::get('shop/category', [ShopController::class, 'selectCategories'])->name('shop.select-categories');
     Route::post('shop/add-to-cart-ajax', [ShopController::class, 'addToCartAjax'])->name('shop.add-to-cart-ajax');
+    Route::post('shop/update-cart-ajax', [ShopController::class, 'updateCart'])->name('shop.updateCart');
     Route::get('shop/checkout', [ShopController::class, 'checkout'])->name('shop.checkout');
     Route::get('shop/cart', [ShopController::class, 'cart'])->name('shop.cart');
 });

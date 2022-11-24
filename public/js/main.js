@@ -51,14 +51,17 @@
 
         $(document).on("click", ".pagination a", function (event) {
             event.preventDefault();
-            var page = $(this).attr("href").split("page=")[1];
-            fetch_data(page);
+            let page = $(this).attr("href").split("page=")[1];
+            let search = $("input[name=oldSearch]").val();
+            let kategori = $("input[name=oldKategori]").val();
+            fetch_data(search, page, kategori);
         });
 
-        function fetch_data(page) {
+        function fetch_data(val, page = 1, kat) {
             $.ajax({
                 type: "GET",
-                url: "/shop/produk?page=" + page,
+                url: "/shop/search-ajax?page=" + page,
+                data: { search: val, kategori: kat },
                 success: function (data) {
                     // console.log(data);
                     $("#table_data_produk").html(data);
@@ -87,15 +90,15 @@
         $(document).on("click", "#ajax-search", function (event) {
             event.preventDefault();
             var search = $("input[name=search]").val();
-            // console.log(search);
             ajaxSearch(search);
+            $("input[name=oldSearch]").val(search);
             window.history.pushState("", "", "/shop");
         });
 
-        function ajaxSearch(val) {
+        function ajaxSearch(val, page = 1) {
             $.ajax({
                 type: "GET",
-                url: "/shop/search-ajax?page=" + val,
+                url: "/shop/search-ajax?page=" + page,
                 data: { search: val },
                 success: function (data) {
                     // console.log(data);
@@ -122,7 +125,7 @@
 
         $(document).on("click", "#ajax-add-to-cart", function (event) {
             event.preventDefault();
-            var data = [];
+            let data = [];
             data[0] = $("input[name=id_barang]").val();
             data[1] = $("input[name=id_user]").val();
             data[2] = $("input[name=nama]").val();
@@ -165,17 +168,51 @@
             });
         }
 
-        if ($("input").hasClass("input-kuantitas")) {
-            let id_transaksi = $("input[name=id_transaksi]").val();
-            console.log(id_transaksi);
-            var results = [];
-            $(".input-kuantitas").each(function () {
-                results.push({
-                    id: this.id,
-                    value: this.value,
+        $(document).on("click", "#ajax-update-cart", function (event) {
+            event.preventDefault();
+            let updated_data = [];
+            if ($("input").hasClass("input-kuantitas")) {
+                var id_transaksi = $("input[name=id_transaksi]").val();
+
+                $(".input-kuantitas").each(function () {
+                    updated_data.push({
+                        id_detail_transaksi: this.id,
+                        kuantitas_baru: this.value,
+                    });
                 });
+            }
+            ajaxUpdateCart(updated_data, id_transaksi);
+        });
+
+        function ajaxUpdateCart(data, id) {
+            $.ajax({
+                type: "POST",
+                url: "/shop/update-cart-ajax",
+                data: { updated_data: data, id_transaksi: id },
+                success: function (data) {
+                    data = data.data;
+                    console.log($("#span-total-transaksi").text());
+                    $("#span-total-transaksi").text(
+                        "Rp " + data["total_transaksi"]
+                    );
+                    swal({
+                        title: "Done!",
+                        text: "Update Success",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).catch(function (timeout) {});
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    swal({
+                        title: "Interupt!",
+                        text: "Update Failed",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                },
             });
-            console.log(results);
         }
     });
 
@@ -363,7 +400,7 @@
         var $button = $(this);
         var oldValue = $button.parent().find("input[name=kuantitas]").val();
         var maxValue = $button.parent().find("input[name=maxQuantity]").val();
-        console.log(maxValue);
+        // console.log(maxValue);
         if ($button.hasClass("inc")) {
             // console.log(oldValue, maxValue);
             // console.log(oldValue < maxValue);

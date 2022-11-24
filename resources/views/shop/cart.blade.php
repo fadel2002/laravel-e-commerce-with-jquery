@@ -80,7 +80,7 @@
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
                         <a href="{{route('shop.index')}}" class="primary-btn btn-success cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"></span>
+                        <a id="ajax-update-cart" href="#" class="primary-btn cart-btn cart-btn-right"></span>
                             Update Cart</a>
                     </div>
                 </div>
@@ -91,7 +91,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Total <span>Rp {{$data['produk']['total_transaksi']}}</span></li>
+                            <li>Total <span id="span-total-transaksi">Rp {{$data['produk']['total_transaksi']}}</span>
+                            </li>
                         </ul>
                         <a href="{{route('shop.checkout')}}" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
