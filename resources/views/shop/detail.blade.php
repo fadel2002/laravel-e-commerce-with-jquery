@@ -63,8 +63,9 @@
                             <button id="ajax-add-to-cart" class="primary-btn btn text-white">UPDATE CART</button>
                         </form>
                         <ul>
-                            <li><b>Availability</b> <span>{{$data['produk']['stok']}}</span></li>
-                            <li><b>Weight</b> <span>{{$data['produk']['berat']}} kg</span></li>
+                            <li><b>Availability</b> <span>{{$data['produk']['stok']}} buah</span></li>
+                            <li><b>Category</b> <span>{{$data['produk']['kategori']}}</span></li>
+                            <li><b>Weight</b> <span>{{$data['produk']['berat']}} gram</span></li>
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>

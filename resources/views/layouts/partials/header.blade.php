@@ -14,7 +14,8 @@
             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
         </ul>
-        <div class="header__cart__price">item: <span>$150.00</span></div>
+        <div class="header__cart__price">item: <span id="span-humberger-total-transaksi" class="span-total-transaksi">Rp
+                {{$data['total_transaksi']}}</span></div>
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__auth">
@@ -124,7 +125,9 @@
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                         <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                     </ul>
-                    <div class="header__cart__price">item: <span>Rp {{$data['total_transaksi']}}</span></div>
+                    <div class="header__cart__price">item: <span id="span-header-total-transaksi"
+                            class="span-total-transaksi">Rp
+                            {{$data['total_transaksi']}}</span></div>
                 </div>
             </div>
         </div>

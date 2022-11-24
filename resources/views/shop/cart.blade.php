@@ -95,7 +95,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Total <span id="span-total-transaksi">Rp {{$data['produk']['total_transaksi']}}</span>
+                            <li>Total <span id="cart-span-total-transaksi" class="span-total-transaksi">Rp
+                                    {{$data['produk']['total_transaksi']}}</span>
                             </li>
                         </ul>
                         <a href="{{route('shop.checkout')}}" class="primary-btn">PROCEED TO CHECKOUT</a>

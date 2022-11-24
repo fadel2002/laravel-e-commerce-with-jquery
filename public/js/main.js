@@ -57,6 +57,9 @@
             if (kategori == "*") {
                 kategori = "";
             }
+            if (!search) {
+                search = "";
+            }
             // console.log("p" + page, "s" + search, "k" + kategori);
             fetch_data(search, page, kategori);
         });
@@ -67,7 +70,7 @@
                 url: "/shop/search-ajax?page=" + page,
                 data: { search: val, kategori: kat },
                 success: function (data) {
-                    // console.log(data);
+                    // console.log(data.data);
                     $("#table_data_produk").html(data);
                 },
             });
@@ -105,10 +108,10 @@
                 url: "/shop/delete-item-ajax",
                 data: { id_dt: id_dt, id_transaksi: id_transaksi },
                 success: function (data) {
-                    // console.log(data.data);
                     data = data.data;
+                    // console.log(data.data);
                     $("#item-" + id_dt).remove();
-                    $("#span-total-transaksi").text(
+                    $(".span-total-transaksi").text(
                         "Rp " + data["total_transaksi"]
                     );
                     swal({
@@ -245,7 +248,7 @@
                             "Rp " + data["transaksi_per_data"][i]
                         );
                     }
-                    $("#span-total-transaksi").text(
+                    $(".span-total-transaksi").text(
                         "Rp " + data["total_transaksi"]
                     );
                     swal({
