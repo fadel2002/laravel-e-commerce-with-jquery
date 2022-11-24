@@ -106,12 +106,12 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="home-menu"><a href="{{route('home')}}">Home</a></li>
-                        <li class="shop-menu"><a href="{{route('shop.index')}}">Shop</a></li>
-                        <li><a href="#">Pages</a>
+                        <li id="btn-menu" class="home-menu"><a href="{{route('home')}}">Home</a></li>
+                        <li id="btn-menu" class="shop-menu"><a href="{{route('shop.index')}}">Shop</a></li>
+                        <li id="btn-menu" class="pages-menu"><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
-                                <li><a href="{{route('shop.checkout')}}">Check Out</a></li>
+                                <li id="btn-menu"><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
+                                <li id="btn-menu"><a href="{{route('shop.checkout')}}">Check Out</a></li>
                             </ul>
                         </li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
@@ -124,7 +124,7 @@
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                         <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                     </ul>
-                    <div class="header__cart__price">item: <span>$150.00</span></div>
+                    <div class="header__cart__price">item: <span>Rp {{$data['total_transaksi']}}</span></div>
                 </div>
             </div>
         </div>
@@ -136,7 +136,7 @@
 <!-- Header Section End -->
 
 <!-- Hero Section Begin -->
-@if (Route::is('shop.*'))
+@if (Route::is('shop.index') || Route::is('shop.select-categories'))
 <section class="hero hero-normal">
     <div class="container">
         <div class="row">

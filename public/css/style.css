@@ -1972,6 +1972,12 @@ ol {
     background: #f5f5f5;
 }
 
+.primary-btn.cart-btn:hover {
+    transition: 200ms;
+    color: white;
+    background: #7fad39;
+}
+
 .primary-btn.cart-btn span {
     font-size: 14px;
 }

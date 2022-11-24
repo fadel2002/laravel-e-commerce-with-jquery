@@ -16,7 +16,7 @@ class BarangSeeder extends Seeder
     public function run()
     {
         Barang::create([
-            'stok_barang' => 10,
+            'stok_barang' => 11,
             'harga_barang' => 15000,
             'nama_barang' => 'Gula',
             'deskripsi_barang' => 'Gula 1 kg',
@@ -27,7 +27,7 @@ class BarangSeeder extends Seeder
         ]);
 
         Barang::create([
-            'stok_barang' => 10,
+            'stok_barang' => 12,
             'harga_barang' => 15000,
             'nama_barang' => 'Gula1',
             'deskripsi_barang' => 'Gula 1 kg',
@@ -38,7 +38,7 @@ class BarangSeeder extends Seeder
         ]);
 
         Barang::create([
-            'stok_barang' => 10,
+            'stok_barang' => 13,
             'harga_barang' => 15000,
             'nama_barang' => 'Gula2',
             'deskripsi_barang' => 'Gula 1 kg',
@@ -49,7 +49,7 @@ class BarangSeeder extends Seeder
         ]);
 
         Barang::create([
-            'stok_barang' => 10,
+            'stok_barang' => 14,
             'harga_barang' => 15000,
             'nama_barang' => 'Gula3',
             'deskripsi_barang' => 'Gula 1 kg',

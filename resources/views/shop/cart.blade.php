@@ -36,11 +36,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <input type="hidden" name="id_transaksi" value="{{$data['produk']['id_transaksi']}}">
                                 @forelse($data['produk']['detailTransaksis'] as $produk)
                                 <tr>
                                     <td class="shoping__cart__item">
                                         <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px" alt="">
-                                        <h5>Vegetable’s Package</h5>
+                                        <h5>{{$produk['barang']['nama_barang']}}</h5>
                                     </td>
                                     <td class="shoping__cart__price">
                                         Rp {{ $produk['barang']['harga_barang'] }}
@@ -48,9 +49,11 @@
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text"
-                                                    name="{{'kuantitas' . $produk['id_detail_transaksi']}}"
-                                                    {{-- lagi dipikirkan --}} value="{{$produk['kuantitas_barang']}}">
+                                                <input type="hidden" name="maxQuantity"
+                                                    value="{{$produk['barang']['stok_barang']}}">
+                                                <input id="{{$produk['id_detail_transaksi']}}" class="input-kuantitas"
+                                                    type="text" name="kuantitas"
+                                                    value="{{$produk['kuantitas_barang']}}">
                                             </div>
                                         </div>
                                     </td>
@@ -68,8 +71,6 @@
                                     </td>
                                 </tr>
                                 @endforelse
-
-
                             </tbody>
                         </table>
                     </div>
@@ -78,8 +79,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="{{route('shop.index')}}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                        <a href="{{route('shop.index')}}" class="primary-btn btn-success cart-btn">CONTINUE SHOPPING</a>
+                        <a href="#" class="primary-btn cart-btn cart-btn-right"></span>
                             Update Cart</a>
                     </div>
                 </div>

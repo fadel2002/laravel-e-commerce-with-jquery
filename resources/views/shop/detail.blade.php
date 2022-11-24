@@ -44,7 +44,6 @@
                         <h3>{{$data['produk']['nama']}}</h3>
                         <div class="product__details__price">{{$data['produk']['harga']}}</div>
                         <p>{{$data['produk']['deskripsi']}}</p>
-                        <input type="hidden" name="maxQuantity" value="{{$data['produk']['stok']}}">
                         <form>
                             @csrf
                             <input type="hidden" name="id_barang" value="{{$data['produk']['id']}}">
@@ -54,6 +53,7 @@
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
+                                        <input type="hidden" name="maxQuantity" value="{{$data['produk']['stok']}}">
                                         <input type="number" name="kuantitas"
                                             value="{{$data['produk']['kuantitas_sementara']}}" min="0"
                                             max="{{$data['produk']['stok']}}">

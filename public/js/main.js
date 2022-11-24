@@ -21,7 +21,12 @@
             Gallery filter
         --------------------*/
 
-        if (window.location.href.includes("shop"))
+        if (
+            window.location.href.includes("shop/cart") ||
+            window.location.href.includes("shop/checkout")
+        )
+            $(".pages-menu").addClass("active");
+        else if (window.location.href.includes("shop"))
             $(".shop-menu").addClass("active");
         else if (window.location.href.includes("contact"))
             $(".contact-menu").addClass("active");
@@ -84,6 +89,7 @@
             var search = $("input[name=search]").val();
             // console.log(search);
             ajaxSearch(search);
+            window.history.pushState("", "", "/shop");
         });
 
         function ajaxSearch(val) {
@@ -157,6 +163,19 @@
                     }).catch(function (timeout) {});
                 },
             });
+        }
+
+        if ($("input").hasClass("input-kuantitas")) {
+            let id_transaksi = $("input[name=id_transaksi]").val();
+            console.log(id_transaksi);
+            var results = [];
+            $(".input-kuantitas").each(function () {
+                results.push({
+                    id: this.id,
+                    value: this.value,
+                });
+            });
+            console.log(results);
         }
     });
 
@@ -342,9 +361,9 @@
     proQty.append('<span class="inc qtybtn">+</span>');
     proQty.on("click", ".qtybtn", function () {
         var $button = $(this);
-        var oldValue = $button.parent().find("input").val();
-        var maxValue = $("input[name=maxQuantity]").val();
-
+        var oldValue = $button.parent().find("input[name=kuantitas]").val();
+        var maxValue = $button.parent().find("input[name=maxQuantity]").val();
+        console.log(maxValue);
         if ($button.hasClass("inc")) {
             // console.log(oldValue, maxValue);
             // console.log(oldValue < maxValue);
@@ -363,6 +382,6 @@
                 newVal = 0;
             }
         }
-        $button.parent().find("input").val(newVal);
+        $button.parent().find("input[name=kuantitas]").val(newVal);
     });
 })(jQuery);

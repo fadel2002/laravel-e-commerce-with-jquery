@@ -30,7 +30,6 @@ class ShopController extends Controller
             return back()->withError($exception->getMessage())->withInput();
         }
     }
-
     public function detail($id)
     {
         try {
@@ -48,7 +47,11 @@ class ShopController extends Controller
                     $cart_history = $detail_barang->kuantitas_barang;
                 }
             }
-
+            
+            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            if (!$transaksi){
+                $transaksi['total_transaksi'] = 0;
+            }
             $data = [
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'admin' => $this->dataAdmin(),
@@ -75,6 +78,7 @@ class ShopController extends Controller
                         'gambar' => $item->gambar_barang,
                     ];
                 }),
+                'total_transaksi' => $transaksi['total_transaksi'],
             ];
             
             return view('shop.detail', compact('data'));
@@ -179,11 +183,16 @@ class ShopController extends Controller
                     });
                 }
                 $data = [];
+                $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+                if (!$transaksi){
+                    $transaksi['total_transaksi'] = 0;
+                }
                 $data = [
                     'admin' => $this->dataAdmin(),
                     'kategori' => ['Food', 'Drink', 'Cigar'],
                     'produk' => $barang,
                     'produk_terbaru' => $barang_terbaru,
+                    'total_transaksi' => $transaksi['total_transaksi'],
                 ];
                 return view('shop.index', compact('data'));
             }catch (ModelNotFoundException $exception) {
@@ -195,9 +204,14 @@ class ShopController extends Controller
     public function checkout(){
         try {
             $data = [];
+            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            if (!$transaksi){
+                $transaksi['total_transaksi'] = 0;
+            }
             $data = [
                 'admin' => $this->dataAdmin(),
                 'kategori' => ['Food', 'Drink', 'Cigar'],
+                'total_transaksi' => $transaksi['total_transaksi'],
             ];            
             return view('shop.checkout', compact('data'));
         }catch (ModelNotFoundException $exception) {
@@ -209,7 +223,10 @@ class ShopController extends Controller
         try {
             $data = [];
             $transaksi = Transaksi::with('detailTransaksis.barang')->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
-            
+            if (!$transaksi) {
+                $transaksi['detailTransaksis'] = [];
+                $transaksi['total_transaksi'] = 0;
+            }
             // return response()->json([
             //     'data' => $transaksi,
             // ], 200);
@@ -218,6 +235,7 @@ class ShopController extends Controller
                 'admin' => $this->dataAdmin(),
                 'kategori' => ['Food', 'Drink', 'Cigar'],
                 'produk' => $transaksi,
+                'total_transaksi' => $transaksi['total_transaksi'],
             ];            
             return view('shop.cart', compact('data'));
         }catch (ModelNotFoundException $exception) {
@@ -229,6 +247,64 @@ class ShopController extends Controller
 
     // ajax
     public function addToCartAjax(Request $request){
+        if ($request->ajax()){
+            try {
+                $data = [];
+
+                $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', $request->id_user]])->first();
+
+                if ($transaksi){
+                    $detail_transaksi = DetailTransaksi::where([['id_transaksi', $transaksi->id_transaksi],['id_barang', $request->id_barang]])->first();
+                    $total_transaksi = $transaksi->total_transaksi;
+                    if ($detail_transaksi){
+                        $total_transaksi = $total_transaksi - ((int)$detail_transaksi->kuantitas_barang * (int)$request->harga);
+                        if ($request->kuantitas == 0){
+                            $detail_transaksi->delete();
+                        }else {
+                            $detail_transaksi->update([
+                                'kuantitas_barang' => $request->kuantitas,
+                            ]);
+                        }                        
+                    }else{
+                        if ($request->kuantitas > 0){
+                            DetailTransaksi::create([
+                                'id_transaksi' => $transaksi->id_transaksi,
+                                'id_barang' => $request->id_barang,
+                                'kuantitas_barang' => (int)$request->kuantitas,
+                            ]);
+                        }
+                    }
+                    $transaksi->update([
+                        'total_transaksi' => $total_transaksi + ((int)$request->harga * (int)$request->kuantitas),
+                    ]);
+                }else {
+                    $new_transaksi = Transaksi::create([
+                        'total_transaksi' => (int)$request->harga * (int)$request->kuantitas,
+                        'id_user' => (int)$request->id_user,
+                    ]);
+                    if ($request->kuantitas > 0){
+                        DetailTransaksi::create([
+                            'id_transaksi' => (int)$new_transaksi->id_transaksi,
+                            'id_barang' => (int)$request->id_barang,
+                            'kuantitas_barang' => (int)$request->kuantitas,
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'message' => 'Update Success!',
+                ], 200);
+            }catch (ModelNotFoundException $exception) {
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        } 
+    }
+
+    public function updateCart(Request $request){
+        return response()->json([
+            'data' => 'Update Success!',
+        ], 200);
+        
         if ($request->ajax()){
             try {
                 $data = [];

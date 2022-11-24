@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 use App\Models\Barang;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Auth;
@@ -9,6 +10,10 @@ use Auth;
 trait ShopTrait {
     private function getAllBarangWithPaginate(){
         $data = [];
+        $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+        if (!$transaksi){
+            $transaksi['total_transaksi'] = 0;
+        }
         $data = [
             'kategori' => ['Food', 'Drink', 'Cigar'],
             'admin' => $this->dataAdmin(),
@@ -21,6 +26,7 @@ trait ShopTrait {
                     'gambar' => $item->gambar_barang,
                 ];
             }),
+            'total_transaksi' => $transaksi['total_transaksi'],
         ];
         return $data;
     }
