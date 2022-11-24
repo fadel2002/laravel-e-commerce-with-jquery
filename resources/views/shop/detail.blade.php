@@ -42,7 +42,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>{{$data['produk']['nama']}}</h3>
-                        <div class="product__details__price">{{$data['produk']['harga']}}</div>
+                        <div class="product__details__price">Rp {{$data['produk']['harga']}}</div>
                         <p>{{$data['produk']['deskripsi']}}</p>
                         <form>
                             @csrf

@@ -11,6 +11,7 @@ use App\Models\Transaksi;
 class HomeController extends Controller
 {
     use \App\Http\Traits\AdminTrait;
+    use \App\Http\Traits\ShopTrait;
 
     public function index()
     {
@@ -26,10 +27,12 @@ class HomeController extends Controller
                 $transaksi['total_transaksi'] = 0;
             }
             $data = [
-                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'kategori' => $this->kategori,
                 'admin' => $this->dataAdmin(),
                 'user' => User::get(),
-                'produk' => Barang::orderBy('harga_barang', 'desc')->limit(8)->get(),
+                'produk_food' => Barang::where('nama_kategori', 'Food')->orderBy('harga_barang', 'desc')->limit(3)->get(),
+                'produk_drink' => Barang::where('nama_kategori', 'Drink')->orderBy('harga_barang', 'desc')->limit(3)->get(),
+                'produk_cigar' => Barang::where('nama_kategori', 'Cigar')->orderBy('harga_barang', 'desc')->limit(2)->get(),
                 'total_transaksi' => $transaksi['total_transaksi'],
             ];
             return view('home.index', compact('data'));

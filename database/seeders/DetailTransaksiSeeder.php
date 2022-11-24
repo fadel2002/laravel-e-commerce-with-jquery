@@ -44,5 +44,38 @@ class DetailTransaksiSeeder extends Seeder
             'id_barang' => 3,
             'kuantitas_barang' => 1,
         ]);
+
+        for ($i=1; $i<10; $i++){
+            DetailTransaksi::create([
+                'id_transaksi' => 3,
+                'id_barang' => $i,
+                'kuantitas_barang' => 2,
+            ]);
+        }
+
+        for ($i=2; $i<5; $i++){
+            DetailTransaksi::create([
+                'id_transaksi' => 4,
+                'id_barang' => $i,
+                'kuantitas_barang' => 1,
+            ]);
+        }
+
+        for ($i=1; $i<4; $i++){
+            DetailTransaksi::create([
+                'id_transaksi' => 5,
+                'id_barang' => $i,
+                'kuantitas_barang' => 1,
+            ]);
+        }
+
+        for ($i=2; $i<5; $i++){
+            DetailTransaksi::create([
+                'id_transaksi' => 6,
+                'id_barang' => $i,
+                'kuantitas_barang' => 1,
+            ]);
+        }
+
     }
 }

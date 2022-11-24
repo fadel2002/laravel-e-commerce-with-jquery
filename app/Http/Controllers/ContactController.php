@@ -11,6 +11,7 @@ use Auth;
 class ContactController extends Controller
 {
     use \App\Http\Traits\AdminTrait;
+    use \App\Http\Traits\ShopTrait;
     
     public function index()
     {
@@ -21,7 +22,7 @@ class ContactController extends Controller
                 $transaksi['total_transaksi'] = 0;
             }
             $data = [
-                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'kategori' => $this->kategori,
                 'admin' => $this->dataAdmin(),
                 'produk' => Barang::get(),
                 'total_transaksi' => $transaksi['total_transaksi'],

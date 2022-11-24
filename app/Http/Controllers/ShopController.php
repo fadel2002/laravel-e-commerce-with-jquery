@@ -53,7 +53,7 @@ class ShopController extends Controller
                 $transaksi['total_transaksi'] = 0;
             }
             $data = [
-                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'kategori' => $this->kategori,
                 'admin' => $this->dataAdmin(),
                 'produk' => [
                     'id' => $barang->id_barang,
@@ -121,7 +121,7 @@ class ShopController extends Controller
                 $data = [];
                 $data = [
                     'admin' => $this->dataAdmin(),
-                    'kategori' => ['Food', 'Drink', 'Cigar'],
+                    'kategori' => $this->kategori,
                     'produk' => Barang::where('nama_barang','LIKE','%'.$request->search."%")->paginate(6),
                     'produk_terbaru' => Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
                         return [
@@ -200,7 +200,7 @@ class ShopController extends Controller
                 // ], 200);
                 $data = [
                     'admin' => $this->dataAdmin(),
-                    'kategori' => ['Food', 'Drink', 'Cigar'],
+                    'kategori' => $this->kategori,
                     'produk' => $barang,
                     'current_kategori' => $request->kategori,
                     'produk_terbaru' => $barang_terbaru,
@@ -216,25 +216,10 @@ class ShopController extends Controller
     public function checkout(){
         try {
             $data = [];
-            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
-            if (!$transaksi){
-                $transaksi['total_transaksi'] = 0;
-            }
-            $data = [
-                'admin' => $this->dataAdmin(),
-                'kategori' => ['Food', 'Drink', 'Cigar'],
-                'total_transaksi' => $transaksi['total_transaksi'],
-            ];            
-            return view('shop.checkout', compact('data'));
-        }catch (ModelNotFoundException $exception) {
-            return back()->withError($exception->getMessage())->withInput();
-        }
-    }
-
-    public function cart(){
-        try {
-            $data = [];
-            $transaksi = Transaksi::with(['detailTransaksis' => function($query){$query->orderBy('id_detail_transaksi');}, 'detailTransaksis.barang'])->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            $transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                $query->orderBy('id_detail_transaksi');
+                $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+            }, 'detailTransaksis.barang:id_barang,nama_barang,harga_barang'])->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
             if (!$transaksi) {
                 $transaksi['detailTransaksis'] = [];
                 $transaksi['total_transaksi'] = 0;
@@ -245,11 +230,86 @@ class ShopController extends Controller
             
             $data = [
                 'admin' => $this->dataAdmin(),
-                'kategori' => ['Food', 'Drink', 'Cigar'],
+                'kategori' => $this->kategori,
+                'produk' => $transaksi,
+                'total_transaksi' => $transaksi['total_transaksi'],
+                'ongkir' => $this->ongkir,
+            ];           
+            return view('shop.checkout', compact('data'));
+        }catch (ModelNotFoundException $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    public function cart(){
+        try {
+            $data = [];
+            $transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                $query->orderBy('id_detail_transaksi');
+                $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+            }, 'detailTransaksis.barang:id_barang,nama_barang,stok_barang,harga_barang,gambar_barang'])->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            if (!$transaksi) {
+                $transaksi['detailTransaksis'] = [];
+                $transaksi['total_transaksi'] = 0;
+            }
+            // return response()->json([
+            //     'data' => $transaksi,
+            // ], 200);
+            
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'kategori' => $this->kategori,
                 'produk' => $transaksi,
                 'total_transaksi' => $transaksi['total_transaksi'],
             ];            
             return view('shop.cart', compact('data'));
+        }catch (ModelNotFoundException $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    public function history(){
+        try {
+            $data = [];
+            $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                $query->orderBy('id_detail_transaksi');
+                $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+            }, 'detailTransaksis.barang:id_barang,gambar_barang'])->where([['status_transaksi', 2],['id_user', Auth::user()->id_user]])->get();
+            
+            $transaksi = Transaksi::select('total_transaksi')->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+
+            if (!$transaksi) {
+                $transaksi['total_transaksi'] = 0;
+            }
+
+            // foreach($history_transaksi as $barang){
+
+            //     if (!is_array($barang)) {
+            //         $barang = json_decode($barang);
+            //     }
+                
+            //     foreach($barang->detail_transaksis as $barang_lagi){
+            //         return response()->json([
+            //             'admin' => $barang_lagi,
+            //             'data' => $barang_lagi->barang->gambar_barang,
+            //         ], 200);
+            //     }
+            // }
+            
+            // return response()->json([
+            //     'admin' => $this->dataAdmin(),
+            //     'kategori' => $this->kategori,
+            //     'produk' => $history_transaksi,
+            //     'total_transaksi' => $transaksi['total_transaksi'],
+            // ], 200);
+            
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'kategori' => $this->kategori,
+                'produk' => $history_transaksi,
+                'total_transaksi' => $transaksi['total_transaksi'],
+            ];            
+            return view('shop.history', compact('data'));
         }catch (ModelNotFoundException $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
@@ -341,16 +401,7 @@ class ShopController extends Controller
                     $sum = $sum + ( $kuantitas_baru *  $dt->barang->harga_barang );
                     $sum_per_data[$i] = $kuantitas_baru *  $dt->barang->harga_barang;
                 }
-
-                // return response()->json([
-                //     'data' => [
-                //         'req' => $request->all(),
-                //         'transaksi' => $transaksi,
-                //         'total_transaksi' => $sum,
-                //         'transaksi_per_data' => $sum_per_data
-                //     ]
-                // ], 200);
-
+                
                 $transaksi->update([
                     'total_transaksi' => $sum,
                 ]);

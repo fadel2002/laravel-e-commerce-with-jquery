@@ -23,7 +23,8 @@
 
         if (
             window.location.href.includes("shop/cart") ||
-            window.location.href.includes("shop/checkout")
+            window.location.href.includes("shop/checkout") ||
+            window.location.href.includes("shop/history")
         )
             $(".pages-menu").addClass("active");
         else if (window.location.href.includes("shop"))

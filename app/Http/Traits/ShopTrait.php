@@ -8,6 +8,11 @@ use Carbon\Carbon;
 use Auth;
 
 trait ShopTrait {
+    
+    private $ongkir = 2000;
+
+    private $kategori = ['Food', 'Drink', 'Cigar'];
+
     private function getAllBarangWithPaginate(){
         $data = [];
         $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
@@ -15,7 +20,7 @@ trait ShopTrait {
             $transaksi['total_transaksi'] = 0;
         }
         $data = [
-            'kategori' => ['Food', 'Drink', 'Cigar'],
+            'kategori' => $this->kategori,
             'admin' => $this->dataAdmin(),
             'produk' => Barang::paginate(6),
             'produk_terbaru' => Barang::orderBy('updated_at', 'desc')->limit(6)->get()->transform(function ($item, $key) {
