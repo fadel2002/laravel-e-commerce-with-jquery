@@ -24,7 +24,7 @@
         if (
             window.location.href.includes("shop/cart") ||
             window.location.href.includes("shop/checkout") ||
-            window.location.href.includes("shop/history")
+            window.location.href.includes("history")
         )
             $(".pages-menu").addClass("active");
         else if (window.location.href.includes("shop"))
@@ -141,6 +141,7 @@
             ajaxSearch(search);
             $("input[name=oldSearch]").val(search);
             window.history.pushState("", "", "/shop");
+            $("input[name=oldKategori]").val("");
         });
 
         function ajaxSearch(val, page = 1) {

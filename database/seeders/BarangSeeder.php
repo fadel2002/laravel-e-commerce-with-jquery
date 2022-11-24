@@ -168,5 +168,27 @@ class BarangSeeder extends Seeder
             'berat_barang' => 250, // bisa dalam gram
             'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
         ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap6',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Cigar',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
+        ]);
+
+        Barang::create([
+            'stok_barang' => 30,
+            'harga_barang' => 6000,
+            'nama_barang' => 'Kecap7',
+            'deskripsi_barang' => 'Garam 250 ml',
+            'nama_kategori' => 'Cigar',
+            'gambar_barang' => 'images/products/2.jpg',
+            'berat_barang' => 250, // bisa dalam gram
+            'updated_at' => \Carbon\Carbon::now()->addHour()->addHour()->addHour()->addHour()->addHour()->addHour()->toDateTimeString()
+        ]);
     }
 }

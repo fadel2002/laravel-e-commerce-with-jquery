@@ -63,9 +63,14 @@
                                         </span>
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <a href="">
-                                            <span class="icon_grid-2x2"></span>
-                                        </a>
+                                        <form action="{{route('history.detail')}}">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{$produk->id_transaksi}}">
+                                            <a href="#"
+                                                onClick="event.preventDefault(); $(this).closest('form').submit();">
+                                                <span class="icon_grid-2x2"></span>
+                                            </a>
+                                        </form>
                                     </td>
                                     </tr>
                                     @empty

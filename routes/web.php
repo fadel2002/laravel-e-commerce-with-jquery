@@ -30,7 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::post('shop/delete-item-ajax', [ShopController::class, 'deleteItem'])->name('shop.delete-item');
     Route::get('shop/checkout', [ShopController::class, 'checkout'])->name('shop.checkout');
     Route::get('shop/cart', [ShopController::class, 'cart'])->name('shop.cart');
-    Route::get('shop/history', [ShopController::class, 'history'])->name('shop.history');
+    
+    Route::get('history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('history/detail', [HistoryController::class, 'detail'])->name('history.detail');
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

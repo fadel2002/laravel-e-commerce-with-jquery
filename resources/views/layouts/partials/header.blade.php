@@ -38,7 +38,7 @@
                 <ul class="header__menu__dropdown">
                     <li><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
                     <li><a href="{{route('shop.checkout')}}">Check Out</a></li>
-                    <li><a href="{{route('shop.history')}}">History</a></li>
+                    <li><a href="{{route('history.index')}}">History</a></li>
                 </ul>
             </li>
             <li><a href="{{route('contact')}}">Contact</a></li>
@@ -114,7 +114,7 @@
                             <ul class="header__menu__dropdown">
                                 <li id="btn-menu"><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
                                 <li id="btn-menu"><a href="{{route('shop.checkout')}}">Check Out</a></li>
-                                <li id="btn-menu"><a href="{{route('shop.history')}}">History</a></li>
+                                <li id="btn-menu"><a href="{{route('history.index')}}">History</a></li>
                             </ul>
                         </li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
