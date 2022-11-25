@@ -36,7 +36,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (!empty($data['produk']['id_transaksi']))
                                 <input type="hidden" name="id_transaksi" value="{{$data['produk']['id_transaksi']}}">
+                                @endif
                                 @forelse($data['produk']['detailTransaksis'] as $produk)
                                 <tr id="item-{{$produk['id_detail_transaksi']}}">
                                     <td class="shoping__cart__item">

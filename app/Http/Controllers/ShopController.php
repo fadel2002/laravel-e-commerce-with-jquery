@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Auth;
 
 class ShopController extends Controller
@@ -392,6 +393,75 @@ class ShopController extends Controller
                     'data' => [
                        'status' => $bool,
                        'total_transaksi' => $transaksi->total_transaksi,
+                    ],
+                ], 200);
+                
+            }catch (ModelNotFoundException $exception) {
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        } 
+    }
+
+    public function checkoutPaymentAjax(Request $request){        
+        if ($request->ajax()){
+            try {
+                $validator = Validator::make($request->all(), [
+                    'address' => 'required|min:10',
+                    'id_transaksi' => 'required',
+                    'payment' => 'required',
+                ]);
+         
+                if ($validator->fails()) {
+                    return response()->json([
+                        'data' => [
+                           'status' => $validator->errors(),
+                        ],
+                    ], 200);
+                }
+
+                $transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                    $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+                }])->where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user]])->first();
+
+                if (!is_array($transaksi)) {
+                    $transaksi = json_decode($transaksi);
+                }
+
+                // return response()->json([
+                //     'data' => [
+                //         'request' => $request->all(),
+                //         'transaksi' => $transaksi,
+                //     ],
+                // ], 200);
+                
+                foreach($transaksi->detail_transaksis as $dt){
+
+                    // if (!is_array($barang)) {
+                    //     $barang = json_decode($barang);
+                    // }
+
+                    // return response()->json([
+                    //     'data' => [
+                    //         'request' => $request->all(),
+                    //         'transaksi' => $dt,
+                    //     ],
+                    // ], 200);
+                
+                    $barang = Barang::where('id_barang', $dt->id_barang)->first();
+                    $barang->update([
+                        'stok_barang' => ( (int)$barang->stok_barang - (int)$dt->kuantitas_barang )
+                    ]);
+                }
+
+                $bool = Transaksi::where('id_transaksi', $request->id_transaksi)->update([
+                    'status_transaksi' => 1,
+                    'metode_transaksi' => $request['payment'],
+                    'alamat_dikirim' => $request['address'],
+                ]);;
+                
+                return response()->json([
+                    'data' => [
+                       'status' => $bool,
                     ],
                 ], 200);
                 

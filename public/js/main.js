@@ -117,7 +117,7 @@
                     );
                     swal({
                         title: "Done!",
-                        text: "Search Success",
+                        text: "Delete Success",
                         type: "success",
                         showConfirmButton: false,
                         timer: 1000,
@@ -126,7 +126,7 @@
                 fail: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
-                        text: "Search Failed",
+                        text: "Delete Failed",
                         type: "warning",
                         showConfirmButton: false,
                         timer: 1500,
@@ -271,6 +271,77 @@
                     }).catch(function (timeout) {});
                 },
             });
+        }
+
+        $(document).on("click", "#ajax-checkout-payment", function (event) {
+            event.preventDefault();
+            let data = [];
+            if ($(".input-column")[0]) {
+                $(".input-column").each(function () {
+                    data[this.name] = this.value;
+                });
+            }
+            if (!data["id_transaksi"] || data["subtotal"] == 0) {
+                return swal({
+                    title: "Interupt!",
+                    text: "Anda belum berbelanja",
+                    type: "warning",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).catch(function (timeout) {});
+            }
+            // console.log(data);
+            ajaxCheckoutPayment(data);
+        });
+
+        function ajaxCheckoutPayment(data) {
+            $.ajax({
+                type: "POST",
+                url: "/shop/checkout-payment-ajax",
+                data: {
+                    address: data["address"],
+                    id_transaksi: data["id_transaksi"],
+                    payment: data["payment"],
+                },
+                success: function (data) {
+                    data = data.data;
+                    // console.log(data);
+                    $(".alert-danger").text("");
+                    if (data.status == 1) {
+                        $(".alert-danger").hide();
+                        swal({
+                            title: "Success!",
+                            text: "Payment Success",
+                            type: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                        }).catch(function (timeout) {});
+                    } else {
+                        $.each(data.status, function (key, value) {
+                            $(".alert-danger").show();
+                            $(".alert-danger").append("<p>" + value + "</p>");
+                        });
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    swal({
+                        title: "Interupt!",
+                        text: "Payment Failed",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                },
+            });
+        }
+    });
+
+    $(".payment").on("change", function () {
+        if (this.checked) {
+            $(".payment").removeClass("input-column");
+            $(this).addClass("input-column");
+        } else {
+            $(".payment").removeClass("input-column");
         }
     });
 
