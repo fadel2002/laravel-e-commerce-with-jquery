@@ -40,8 +40,11 @@
                                 @forelse($data['produk']['detailTransaksis'] as $produk)
                                 <tr id="item-{{$produk['id_detail_transaksi']}}">
                                     <td class="shoping__cart__item">
-                                        <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px" alt="">
-                                        <h5>{{$produk['barang']['nama_barang']}}</h5>
+                                        <a href="/shop/detail/{{$produk['barang']['id_barang']}}">
+                                            <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px"
+                                                alt="">
+                                            <h5>{{$produk['barang']['nama_barang']}}</h5>
+                                        </a>
                                     </td>
                                     <td class="shoping__cart__price">
                                         Rp {{ $produk['barang']['harga_barang'] }}

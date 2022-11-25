@@ -82,6 +82,7 @@ class HistoryController extends Controller
                 'kategori' => $this->kategori,
                 'produk' => $transaksi,
                 'total_transaksi' => $transaksi['total_transaksi'],
+                'ongkir' => $this->ongkir,
             ];            
             return view('history.detail', compact('data'));
         }catch (ModelNotFoundException $exception) {

@@ -37,10 +37,13 @@
                             <tbody>
                                 <input type="hidden" name="id_transaksi" value="{{$data['produk']['id_transaksi']}}">
                                 @foreach($data['produk']['detailTransaksis'] as $produk)
-                                <tr id="item-{{$produk['id_detail_transaksi']}}">
+                                <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px" alt="">
-                                        <h5>{{$produk['barang']['nama_barang']}}</h5>
+                                        <a href="/shop/detail/{{$produk['barang']['id_barang']}}">
+                                            <img src="{{asset($produk['barang']['gambar_barang'])}}" width="100px"
+                                                alt="">
+                                            <h5>{{$produk['barang']['nama_barang']}}</h5>
+                                        </a>
                                     </td>
                                     <td class="shoping__cart__price">
                                         Rp {{ $produk['barang']['harga_barang'] }}
@@ -61,12 +64,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__btns">
-                        <a href="{{route('shop.index')}}" class="primary-btn btn-success cart-btn">CONTINUE SHOPPING</a>
-                    </div>
+                <div class="col-lg-6">
                 </div>
                 <div class="col-lg-6">
+                    <div class="shoping__checkout mt-0">
+                        <h5>Purchase Total</h5>
+                        <ul>
+                            <ul class="my-2">
+                                <li class="font-weight-normal">Subtotal <span>Rp
+                                        {{$data['produk']['total_transaksi'] - $data['ongkir']}}</span>
+                                </li>
+                            </ul>
+                            <li class="font-weight-normal my-2">Ongkir <span>Rp
+                                    {{$data['ongkir']}}</span>
+                            </li>
+                            <li class="my-2">Total <span>Rp
+                                    {{$data['produk']['total_transaksi']}}</span>
+                            </li>
+                        </ul>
+                        <a href="{{route('shop.index')}}" class="primary-btn">CONTINUE SHOPPING</a>
+                    </div>
                 </div>
             </div>
     </section>
