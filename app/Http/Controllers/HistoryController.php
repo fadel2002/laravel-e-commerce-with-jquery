@@ -65,10 +65,14 @@ class HistoryController extends Controller
     public function detail(Request $request){
         try {
             $data = [];
-            $transaksi = Transaksi::with(['detailTransaksis' => function($query){
+            
+            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+           
+            $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
                 $query->orderBy('id_detail_transaksi');
                 $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
             }, 'detailTransaksis.barang:id_barang,nama_barang,stok_barang,harga_barang,gambar_barang'])->where([['status_transaksi', 2],['id_transaksi', $request->id],['id_user', Auth::user()->id_user]])->first();
+            
             if (!$transaksi) {
                 $transaksi['detailTransaksis'] = [];
                 $transaksi['total_transaksi'] = 0;
@@ -81,6 +85,7 @@ class HistoryController extends Controller
                 'admin' => $this->dataAdmin(),
                 'kategori' => $this->kategori,
                 'produk' => $transaksi,
+                'histori_produk' => $history_transaksi,
                 'total_transaksi' => $transaksi['total_transaksi'],
                 'ongkir' => $this->ongkir,
             ];            

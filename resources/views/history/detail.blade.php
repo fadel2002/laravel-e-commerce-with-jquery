@@ -35,8 +35,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <input type="hidden" name="id_transaksi" value="{{$data['produk']['id_transaksi']}}">
-                                @foreach($data['produk']['detailTransaksis'] as $produk)
+                                @foreach($data['histori_produk']['detailTransaksis'] as $produk)
                                 <tr>
                                     <td class="shoping__cart__item">
                                         <a href="/shop/detail/{{$produk['barang']['id_barang']}}">
@@ -72,14 +71,14 @@
                         <ul>
                             <ul class="my-2">
                                 <li class="font-weight-normal">Subtotal <span>Rp
-                                        {{$data['produk']['total_transaksi'] - $data['ongkir']}}</span>
+                                        {{$data['histori_produk']['total_transaksi'] - $data['ongkir']}}</span>
                                 </li>
                             </ul>
                             <li class="font-weight-normal my-2">Ongkir <span>Rp
                                     {{$data['ongkir']}}</span>
                             </li>
                             <li class="my-2">Total <span>Rp
-                                    {{$data['produk']['total_transaksi']}}</span>
+                                    {{$data['histori_produk']['total_transaksi']}}</span>
                             </li>
                         </ul>
                         <a href="{{route('shop.index')}}" class="primary-btn">CONTINUE SHOPPING</a>

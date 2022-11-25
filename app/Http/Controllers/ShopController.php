@@ -279,6 +279,8 @@ class ShopController extends Controller
 
                 $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', $request->id_user]])->first();
 
+                $sum = 0;
+
                 if ($transaksi){
                     $detail_transaksi = DetailTransaksi::where([['id_transaksi', $transaksi->id_transaksi],['id_barang', $request->id_barang]])->first();
                     $total_transaksi = $transaksi->total_transaksi;
@@ -303,11 +305,16 @@ class ShopController extends Controller
                     $transaksi->update([
                         'total_transaksi' => $total_transaksi + ((int)$request->harga * (int)$request->kuantitas),
                     ]);
+
+                    $sum = $transaksi->total_transaksi;
                 }else {
                     $new_transaksi = Transaksi::create([
                         'total_transaksi' => (int)$request->harga * (int)$request->kuantitas,
                         'id_user' => (int)$request->id_user,
                     ]);
+
+                    $sum = $new_transaksi->total_transaksi;
+
                     if ($request->kuantitas > 0){
                         DetailTransaksi::create([
                             'id_transaksi' => (int)$new_transaksi->id_transaksi,
@@ -318,7 +325,9 @@ class ShopController extends Controller
                 }
 
                 return response()->json([
-                    'message' => 'Update Success!',
+                    'data' => [
+                        'total_transaksi' => $sum,
+                    ],
                 ], 200);
             }catch (ModelNotFoundException $exception) {
                 return back()->withError($exception->getMessage())->withInput();
@@ -421,31 +430,13 @@ class ShopController extends Controller
 
                 $transaksi = Transaksi::with(['detailTransaksis' => function($query){
                     $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
-                }])->where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user]])->first();
+                }])->where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user],['status_transaksi', 0]])->first();
 
                 if (!is_array($transaksi)) {
                     $transaksi = json_decode($transaksi);
                 }
-
-                // return response()->json([
-                //     'data' => [
-                //         'request' => $request->all(),
-                //         'transaksi' => $transaksi,
-                //     ],
-                // ], 200);
                 
                 foreach($transaksi->detail_transaksis as $dt){
-
-                    // if (!is_array($barang)) {
-                    //     $barang = json_decode($barang);
-                    // }
-
-                    // return response()->json([
-                    //     'data' => [
-                    //         'request' => $request->all(),
-                    //         'transaksi' => $dt,
-                    //     ],
-                    // ], 200);
                 
                     $barang = Barang::where('id_barang', $dt->id_barang)->first();
                     $barang->update([
@@ -462,6 +453,7 @@ class ShopController extends Controller
                 return response()->json([
                     'data' => [
                        'status' => $bool,
+                       'ongkir' => $this->ongkir,
                     ],
                 ], 200);
                 

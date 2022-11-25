@@ -123,7 +123,7 @@
                         timer: 1000,
                     }).catch(function (timeout) {});
                 },
-                fail: function (xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
                         text: "Delete Failed",
@@ -160,7 +160,7 @@
                         timer: 1000,
                     }).catch(function (timeout) {});
                 },
-                fail: function (xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
                         text: "Search Failed",
@@ -196,7 +196,11 @@
                     harga: data[4],
                 },
                 success: function (data) {
+                    data = data.data;
                     // console.log(data);
+                    $(".span-total-transaksi").text(
+                        "Rp " + data["total_transaksi"]
+                    );
                     swal({
                         title: "Done!",
                         text: "Update Success",
@@ -205,7 +209,7 @@
                         timer: 1000,
                     }).catch(function (timeout) {});
                 },
-                fail: function (xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
                         text: "Update Failed",
@@ -261,7 +265,7 @@
                         timer: 1000,
                     }).catch(function (timeout) {});
                 },
-                fail: function (xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
                         text: "Update Failed",
@@ -303,12 +307,18 @@
                     id_transaksi: data["id_transaksi"],
                     payment: data["payment"],
                 },
+                timeout: 5000,
                 success: function (data) {
                     data = data.data;
                     // console.log(data);
                     $(".alert-danger").text("");
                     if (data.status == 1) {
                         $(".alert-danger").hide();
+                        $(".input-column[name=address]").val("");
+                        $("span.subtotal-reload").text("Rp 0");
+                        $("li.item-reload").remove();
+                        $("span.total-reload").text("Rp " + data.ongkir);
+                        $("span.span-total-transaksi").text("Rp 0");
                         swal({
                             title: "Success!",
                             text: "Payment Success",
@@ -319,11 +329,13 @@
                     } else {
                         $.each(data.status, function (key, value) {
                             $(".alert-danger").show();
-                            $(".alert-danger").append("<p>" + value + "</p>");
+                            $(".alert-danger").append(
+                                '<p class="mb-0">' + value + "</p>"
+                            );
                         });
                     }
                 },
-                fail: function (xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     swal({
                         title: "Interupt!",
                         text: "Payment Failed",
