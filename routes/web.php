@@ -31,9 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::get('shop/checkout', [ShopController::class, 'checkout'])->name('shop.checkout');
     Route::post('shop/checkout-payment-ajax', [ShopController::class, 'checkoutPaymentAjax'])->name('shop.checkout-payment-ajax');
     Route::get('shop/cart', [ShopController::class, 'cart'])->name('shop.cart');
-    
+
     Route::get('history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('history/detail', [HistoryController::class, 'detail'])->name('history.detail');
+
+    Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

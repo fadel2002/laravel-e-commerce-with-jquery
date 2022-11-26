@@ -312,14 +312,23 @@
                     data = data.data;
                     // console.log(data);
                     $(".alert-danger").text("");
-                    if (data.status == 1) {
+                    if (data.status == 2) {
+                        $(".alert-danger").hide();
+                        return swal({
+                            title: "Interupt!",
+                            text: data.message,
+                            type: "warning",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).catch(function (timeout) {});
+                    } else if (data.status == 1) {
                         $(".alert-danger").hide();
                         $(".input-column[name=address]").val("");
                         $("span.subtotal-reload").text("Rp 0");
                         $("li.item-reload").remove();
                         $("span.total-reload").text("Rp " + data.ongkir);
                         $("span.span-total-transaksi").text("Rp 0");
-                        swal({
+                        return swal({
                             title: "Success!",
                             text: "Payment Success",
                             type: "success",

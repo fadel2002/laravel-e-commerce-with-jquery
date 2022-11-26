@@ -423,7 +423,7 @@ class ShopController extends Controller
                 if ($validator->fails()) {
                     return response()->json([
                         'data' => [
-                           'status' => $validator->errors(),
+                            'status' => $validator->errors(),
                         ],
                     ], 200);
                 }
@@ -432,13 +432,45 @@ class ShopController extends Controller
                     $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
                 }])->where([['id_transaksi', (int)$request->id_transaksi],['id_user', Auth::user()->id_user],['status_transaksi', 0]])->first();
 
+                if (!$transaksi){
+                    return response()->json([
+                        'data' => [
+                           'status' => 2, // status lain, message transaksi not exist
+                           'message' => 'Anda belum berbelanja', 
+                           'ongkir' => $this->ongkir,
+                        ],
+                    ], 200);
+                }
+
                 if (!is_array($transaksi)) {
                     $transaksi = json_decode($transaksi);
+                }
+
+                // validasi kuantitas
+                $message = "";
+                foreach($transaksi->detail_transaksis as $dt){
+                
+                    $barang = Barang::where('id_barang', $dt->id_barang)->first();
+
+                    if ( (int)$barang->stok_barang - (int)$dt->kuantitas_barang < 0){
+                        $message = $message.$barang->nama_barang." ";
+                    }
+                }
+
+                if ($message != ""){
+                    return response()->json([
+                        'data' => [
+                        'status' => 2, // barang habis
+                        'message' => $message.' stoknya habis, harap update keranjang anda!',
+                        'ongkir' => $this->ongkir,
+                        ],
+                    ], 200);
                 }
                 
                 foreach($transaksi->detail_transaksis as $dt){
                 
                     $barang = Barang::where('id_barang', $dt->id_barang)->first();
+
                     $barang->update([
                         'stok_barang' => ( (int)$barang->stok_barang - (int)$dt->kuantitas_barang )
                     ]);

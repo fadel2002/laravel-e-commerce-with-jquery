@@ -41,6 +41,7 @@
                     <li><a href="{{route('history.index')}}">History</a></li>
                 </ul>
             </li>
+            <li><a href="{{route('chat.index')}}">Chat</a></li>
             <li><a href="{{route('contact')}}">Contact</a></li>
         </ul>
     </nav>
@@ -117,6 +118,7 @@
                                 <li id="btn-menu"><a href="{{route('history.index')}}">History</a></li>
                             </ul>
                         </li>
+                        <li id="btn-menu" class="shop-menu"><a href="{{route('chat.index')}}">Chat</a></li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
