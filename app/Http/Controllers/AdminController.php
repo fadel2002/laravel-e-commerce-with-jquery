@@ -23,7 +23,7 @@ class AdminController extends Controller
                 $transaksi['total_transaksi'] = 0;
             }
 
-            $barang = Barang::paginate(10);
+            $barang = Barang::get();
 
             // return response()->json([
             //     'data' =>  $barang,
@@ -48,10 +48,8 @@ class AdminController extends Controller
         try {
             $data = [];
 
-            $barang = Barang::paginate(10);
-
             $data = [
-                'produk' => $barang,
+                'produk' => Barang::paginate(10),
             ];
             
             return view('admin.pagination', compact('data'))->render();
@@ -59,6 +57,22 @@ class AdminController extends Controller
         }catch (ModelNotFoundException $exception) {
             
             return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    
+    public function delete(Request $request){
+        if ($request->ajax()){
+            try {
+                $bool = Barang::where('id_barang', $request->id_barang)->delete();
+                
+                return response()->json([
+                    'status' => $bool,
+                ], 200);       
+            }catch (ModelNotFoundException $exception) {
+                
+                return back()->withError($exception->getMessage())->withInput();
+            }
         }
     }
 }

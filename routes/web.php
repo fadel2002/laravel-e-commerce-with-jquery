@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); 
+    Route::delete('/admin/delete', [AdminController::class, 'delete'])->name('admin.delete'); 
     Route::get('/admin/more-data', [AdminController::class, 'moreData'])->name('admin.more-data'); 
 });
 

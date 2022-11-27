@@ -25,13 +25,13 @@
             window.location.href.includes("shop/cart") ||
             window.location.href.includes("shop/checkout") ||
             window.location.href.includes("history") ||
-            window.location.href.includes("admin")
+            window.location.href.includes("chat")
         )
             $(".pages-menu").addClass("active");
         else if (window.location.href.includes("shop"))
             $(".shop-menu").addClass("active");
-        else if (window.location.href.includes("chat"))
-            $(".chat-menu").addClass("active");
+        else if (window.location.href.includes("admin"))
+            $(".admin-menu").addClass("active");
         else if (window.location.href.includes("contact"))
             $(".contact-menu").addClass("active");
         else $(".home-menu").addClass("active");
