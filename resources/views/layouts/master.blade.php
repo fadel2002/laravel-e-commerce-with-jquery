@@ -49,6 +49,7 @@
     <script src="{{asset('js/mixitup.min.js')}}"></script>
     <script src="{{asset('js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('js/history.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     @stack('script')

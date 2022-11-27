@@ -110,3 +110,7 @@
     <!-- Checkout Section End -->
 </div>
 @endsection
+
+@push('script')
+<script src="{{asset('js/shop.js')}}"></script>
+@endpush

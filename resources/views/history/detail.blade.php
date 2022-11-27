@@ -67,9 +67,12 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="shoping__checkout mt-0">
+                        <h5 class="font-weight-normal my-3">{{$data['histori_produk']['created_at']->translatedFormat('d F
+                            Y h:m')}}</h5>
                         <h5>Purchase Total</h5>
                         <ul>
                             <ul class="my-2">
+
                                 <li class="font-weight-normal">Subtotal <span>Rp
                                         {{$data['histori_produk']['total_transaksi'] - $data['ongkir']}}</span>
                                 </li>

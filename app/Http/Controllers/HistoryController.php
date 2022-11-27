@@ -21,34 +21,13 @@ class HistoryController extends Controller
             $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
                 $query->orderBy('id_detail_transaksi');
                 $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
-            }, 'detailTransaksis.barang:id_barang,gambar_barang'])->where([['status_transaksi', 2],['id_user', Auth::user()->id_user]])->get();
+            }, 'detailTransaksis.barang:id_barang,gambar_barang'])->where([['status_transaksi', 2],['id_user', Auth::user()->id_user]])->orderBy('updated_at', 'desc')->paginate(4);
             
             $transaksi = Transaksi::select('total_transaksi')->where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
 
             if (!$transaksi) {
                 $transaksi['total_transaksi'] = 0;
             }
-
-            // foreach($history_transaksi as $barang){
-
-            //     if (!is_array($barang)) {
-            //         $barang = json_decode($barang);
-            //     }
-                
-            //     foreach($barang->detail_transaksis as $barang_lagi){
-            //         return response()->json([
-            //             'admin' => $barang_lagi,
-            //             'data' => $barang_lagi->barang->gambar_barang,
-            //         ], 200);
-            //     }
-            // }
-            
-            // return response()->json([
-            //     'admin' => $this->dataAdmin(),
-            //     'kategori' => $this->kategori,
-            //     'produk' => $history_transaksi,
-            //     'total_transaksi' => $transaksi['total_transaksi'],
-            // ], 200);
             
             $data = [
                 'admin' => $this->dataAdmin(),
@@ -92,6 +71,25 @@ class HistoryController extends Controller
             return view('history.detail', compact('data'));
         }catch (ModelNotFoundException $exception) {
             return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    public function moreData(Request $request){
+        if ($request->ajax()){
+            try {
+                $data = [];
+                $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                    $query->orderBy('id_detail_transaksi');
+                    $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+                }, 'detailTransaksis.barang:id_barang,gambar_barang'])->where([['status_transaksi', 2],['id_user', Auth::user()->id_user]])->orderBy('updated_at', 'desc')->paginate(4);
+                
+                $data = [
+                    'produk' => $history_transaksi,
+                ];            
+                return view('history.pagination', compact('data'))->render();
+            }catch (ModelNotFoundException $exception) {
+                return back()->withError($exception->getMessage())->withInput();
+            }
         }
     }
 

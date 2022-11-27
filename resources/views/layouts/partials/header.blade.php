@@ -36,6 +36,9 @@
             <li><a href="{{route('shop.index')}}">Shop</a></li>
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
+                    @if(auth()->user()->tipe_user == 2)
+                    <li><a href="{{route('admin.index')}}">Admin</a></li>
+                    @endif
                     <li><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
                     <li><a href="{{route('shop.checkout')}}">Check Out</a></li>
                     <li><a href="{{route('history.index')}}">History</a></li>
@@ -113,12 +116,15 @@
                         <li id="btn-menu" class="shop-menu"><a href="{{route('shop.index')}}">Shop</a></li>
                         <li id="btn-menu" class="pages-menu"><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
+                                @if(auth()->user()->tipe_user == 2)
+                                <li id="btn-menu"><a href="{{route('admin.index')}}">Admin</a></li>
+                                @endif
                                 <li id="btn-menu"><a href="{{route('shop.cart')}}">Shoping Cart</a></li>
                                 <li id="btn-menu"><a href="{{route('shop.checkout')}}">Check Out</a></li>
                                 <li id="btn-menu"><a href="{{route('history.index')}}">History</a></li>
                             </ul>
                         </li>
-                        <li id="btn-menu" class="shop-menu"><a href="{{route('chat.index')}}">Chat</a></li>
+                        <li id="btn-menu" class="chat-menu"><a href="{{route('chat.index')}}">Chat</a></li>
                         <li class="contact-menu"><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>

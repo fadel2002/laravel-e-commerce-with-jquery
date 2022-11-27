@@ -15,6 +15,12 @@ class ShopController extends Controller
     use \App\Http\Traits\AdminTrait;
     use \App\Http\Traits\ShopTrait;
     
+
+    /**
+     * Menampilkan halaman shop pada user.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         try {
@@ -31,6 +37,13 @@ class ShopController extends Controller
             return back()->withError($exception->getMessage())->withInput();
         }
     }
+
+    /**
+     * Menampilkan halaman detail barang pada user.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
     public function detail($id)
     {
         try {

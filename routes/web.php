@@ -33,9 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::get('shop/cart', [ShopController::class, 'cart'])->name('shop.cart');
 
     Route::get('history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('history/more-data', [HistoryController::class, 'moreData'])->name('history.more-data');
     Route::get('history/detail', [HistoryController::class, 'detail'])->name('history.detail');
 
     Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); 
+    Route::get('/admin/more-data', [AdminController::class, 'moreData'])->name('admin.more-data'); 
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
