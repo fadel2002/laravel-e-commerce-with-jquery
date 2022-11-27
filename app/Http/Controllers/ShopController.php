@@ -449,7 +449,17 @@ class ShopController extends Controller
                     return response()->json([
                         'data' => [
                            'status' => 2, // status lain, message transaksi not exist
-                           'message' => 'Anda belum berbelanja', 
+                           'message' => 'Anda belum berbelanja!', 
+                           'ongkir' => $this->ongkir,
+                        ],
+                    ], 200);
+                }
+
+                if (!$transaksi->total_transaksi){
+                    return response()->json([
+                        'data' => [
+                           'status' => 2, // status lain, message transaksi not exist
+                           'message' => 'Ada item yang dihapus oleh admin, harap reload page!', 
                            'ongkir' => $this->ongkir,
                         ],
                     ], 200);

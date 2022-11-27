@@ -55,12 +55,22 @@ $(document).ready(function () {
         let id_dt = $(this).attr("id");
         var id_transaksi = $("input[name=id_transaksi]").val();
         // console.log(id);
-        ajaxDeleteItem(id_dt, id_transaksi);
+        swal({
+            title: "Confirmation!",
+            text: "Anda yakin menghapus barang ini dari cart?",
+            type: "warning",
+            showConfirmButton: true,
+            showCancelButton: true,
+        })
+            .then(function (val) {
+                if (val) ajaxDeleteItem(id_dt, id_transaksi);
+            })
+            .catch(function (timeout) {});
     });
 
     function ajaxDeleteItem(id_dt, id_transaksi) {
         $.ajax({
-            type: "POST",
+            type: "DELETE",
             url: "/shop/delete-item-ajax",
             data: { id_dt: id_dt, id_transaksi: id_transaksi },
             success: function (data) {

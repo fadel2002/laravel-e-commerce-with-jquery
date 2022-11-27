@@ -2131,22 +2131,39 @@ ol {
 .checkout__input input {
     width: 100%;
     height: 46px;
-    border: 1px solid #ebebeb;
+    border: 1px solid #cbcbcb;
     padding-left: 20px;
     font-size: 16px;
-    color: #b2b2b2;
+    color: #787878;
     border-radius: 4px;
 }
 
 .checkout__input textarea {
     width: 100%;
-    border: 1px solid #ebebeb;
+    border: 1px solid #cbcbcb;
     padding-left: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 16px;
-    color: #b2b2b2;
+    color: #787878;
     border-radius: 4px;
+}
+
+.select2 {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #cbcbcb;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #787878;
+    border-radius: 4px;
+}
+
+span.current {
+    height: 100%;
+    color: #787878;
+    display: flex;
+    align-items: center;
 }
 
 .checkout__input input.checkout__input__add {

@@ -64,10 +64,31 @@ class AdminController extends Controller
     public function delete(Request $request){
         if ($request->ajax()){
             try {
-                $bool = Barang::where('id_barang', $request->id_barang)->delete();
+                $barang = Barang::where('id_barang', $request->id_barang)->first();
+                $dts = DetailTransaksi::where('id_barang', $request->id_barang)->get();
+
+                // return response()->json([
+                //     'status' => [
+                //         'trans' => $dts,
+                //     ],
+                // ], 200); 
+
+                foreach($dts as $dt){
+                    $transaksi = Transaksi::where('id_transaksi', $dt->id_transaksi)->first();
+
+                    $transaksi->update([
+                        'total_transaksi' => (int)$transaksi->total_transaksi - ((int)$dt->kuantitas_barang * (int)$barang->harga_barang),
+                    ]);
+                }
+
+                $bool_b = Barang::where('id_barang', $request->id_barang)->delete();
+                $bool_dt = DetailTransaksi::where('id_barang', $request->id_barang)->delete();
                 
                 return response()->json([
-                    'status' => $bool,
+                    'status' => [
+                        'hapus_barang' => $bool_b,
+                        'hapus_detail_transaksi' => $bool_dt,
+                    ],
                 ], 200);       
             }catch (ModelNotFoundException $exception) {
                 

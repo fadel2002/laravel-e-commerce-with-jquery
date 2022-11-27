@@ -18,10 +18,14 @@
     </section>
 
     <!-- Admin Section Begin -->
-    <!-- Admin Section Begin -->
     <section class="shoping-cart spad">
         <div class="container" id="table_data_admin_produk">
-            <h4 class="msg_header mb-2">Product</h4>
+            <div class="msg_header mb-2 mx-1 pb-0 row d-flex justify-content-between align-items-center">
+                <h4>Product</h4>
+                <button type="submit" data-toggle="modal" data-target="#ModalCreate"
+                    class="site-btn cart-btn-right mb-2 rounded">Create
+                    Product</button>
+            </div>
             <div class="shoping__cart__table">
                 <table id="list-product" class="table table-bordered table-striped">
                     <thead>
@@ -69,6 +73,8 @@
         </div>
     </section>
     <!-- Admin Section End -->
+
+    @include('admin.modal.create-product')
 </div>
 @endsection
 
