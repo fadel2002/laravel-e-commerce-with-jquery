@@ -4,7 +4,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama</th>
+                        <th>Name</th>
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Date</th>

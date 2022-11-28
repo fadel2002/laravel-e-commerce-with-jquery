@@ -119,7 +119,79 @@ class AdminController extends Controller
         }
     }
 
-    /* Post and Delete Method */
+    public function transaksiDetail(Request $request){
+        try {
+            $data = [];
+            
+            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+           
+            $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
+                $query->orderBy('id_detail_transaksi');
+                $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
+            }, 'detailTransaksis.barang:id_barang,nama_barang,stok_barang,harga_barang,gambar_barang', 'user:id_user,name,email,no_telp_user'])->where('id_transaksi', $request->id)->first();
+            
+            if (!$transaksi) {
+                $transaksi['detailTransaksis'] = [];
+                $transaksi['total_transaksi'] = 0;
+            }
+            // return response()->json([
+            //     'data' => $history_transaksi,
+            // ], 200);
+            
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'produk' => $transaksi,
+                'histori_produk' => $history_transaksi,
+                'total_transaksi' => $transaksi['total_transaksi'],
+                'ongkir' => $this->ongkir,
+            ];            
+            return view('admin.detailTransaksi', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    public function productDetail($id){
+        try {
+            $data = [];
+            
+            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+           
+            $barang = Barang::where('id_barang', $id)->first();
+            
+            if (!$transaksi) {
+                $transaksi['detailTransaksis'] = [];
+                $transaksi['total_transaksi'] = 0;
+            }
+
+            // return response()->json([
+            //     'admin' => $this->dataAdmin(),
+            //     'produk' => $transaksi,
+            //     'barang' => $barang,
+            //     'total_transaksi' => $transaksi['total_transaksi'],
+            //     'ongkir' => $this->ongkir,
+            // ], 200);
+            
+            
+            $data = [
+                'admin' => $this->dataAdmin(),
+                'kategori' => $this->kategori,
+                'produk' => $transaksi,
+                'barang' => $barang,
+                'total_transaksi' => $transaksi['total_transaksi'],
+                'ongkir' => $this->ongkir,
+            ];            
+            return view('admin.detailProduct', compact('data'));
+            
+        }catch (ModelNotFoundException $exception) {
+            
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
+
+    /* Post Put and Delete Method */
     // ajax
     public function delete(Request $request){
         if ($request->ajax()){
@@ -196,40 +268,6 @@ class AdminController extends Controller
                 
                 return back()->withError($exception->getMessage())->withInput();
             }
-        }
-    }
-
-    public function transaksiDetail(Request $request){
-        try {
-            $data = [];
-            
-            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
-           
-            $history_transaksi = Transaksi::with(['detailTransaksis' => function($query){
-                $query->orderBy('id_detail_transaksi');
-                $query->select('id_detail_transaksi', 'id_transaksi', 'id_barang', 'kuantitas_barang');
-            }, 'detailTransaksis.barang:id_barang,nama_barang,stok_barang,harga_barang,gambar_barang', 'user:id_user,name,email,no_telp_user'])->where('id_transaksi', $request->id)->first();
-            
-            if (!$transaksi) {
-                $transaksi['detailTransaksis'] = [];
-                $transaksi['total_transaksi'] = 0;
-            }
-            // return response()->json([
-            //     'data' => $history_transaksi,
-            // ], 200);
-            
-            $data = [
-                'admin' => $this->dataAdmin(),
-                'produk' => $transaksi,
-                'histori_produk' => $history_transaksi,
-                'total_transaksi' => $transaksi['total_transaksi'],
-                'ongkir' => $this->ongkir,
-            ];            
-            return view('admin.detailTransaksi', compact('data'));
-            
-        }catch (ModelNotFoundException $exception) {
-            
-            return back()->withError($exception->getMessage())->withInput();
         }
     }
 

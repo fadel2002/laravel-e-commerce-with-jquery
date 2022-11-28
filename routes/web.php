@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); 
+    Route::get('/admin/product/detail/{id}', [AdminController::class, 'productDetail'])->name('admin.product-detail'); 
     Route::post('/admin/create-product', [AdminController::class, 'createProduct'])->name('admin.create-product'); 
     Route::get('/admin/transkasi', [AdminController::class, 'transaksi'])->name('admin.transaksi'); 
     Route::get('/admin/more-transkasi', [AdminController::class, 'moreTransaksi'])->name('admin.more-transaksi'); 

@@ -77,5 +77,3 @@
         </div>
     </div>
 </form>
-Footer
-© 2022 GitHub, Inc.

@@ -22,6 +22,9 @@
     <!-- History Section Begin -->
     <section class="shoping-cart spad">
         <div class="container" id="table_data_transaksi_admin">
+            <div class="msg_header mb-2 mx-1 pb-0 row d-flex justify-content-between align-items-center">
+                <h4 class="mb-3 font_header">Transaction</h4>
+            </div>
             @include('admin.pagination')
         </div>
     </section>

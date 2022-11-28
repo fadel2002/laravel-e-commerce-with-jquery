@@ -21,7 +21,7 @@
     <section class="shoping-cart spad">
         <div class="container" id="table_data_admin_produk">
             <div class="msg_header mb-2 mx-1 pb-0 row d-flex justify-content-between align-items-center">
-                <h4>Product</h4>
+                <h4 class="font_header">Product</h4>
                 <button type="submit" data-toggle="modal" data-target="#ModalCreate"
                     class="site-btn cart-btn-right mb-2 rounded">Create
                     Product</button>
@@ -55,7 +55,8 @@
                             <td class="p-1">{{ $product->nama_kategori}}</td>
                             <td class="p-1">{{ $product->deskripsi_barang }}</td>
                             <td class="p-1" style="justify-content-center">
-                                <span class="d-flex justify-content-around delete-span" style="border:none;"><a href="#"
+                                <span class="d-flex justify-content-around delete-span" style="border:none;"><a
+                                        href="/admin/product/detail/{{$product->id_barang}}"
                                         class="btn btn-success btn-sm">Edit</a>
                                     <input type="hidden" name="id_barang" value="{{$product->id_barang}}">
                                     <input type="submit" value="Delete" class="btn btn-danger delete-button btn-sm">
