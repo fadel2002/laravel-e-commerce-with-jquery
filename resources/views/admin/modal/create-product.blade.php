@@ -8,58 +8,71 @@
                         <span class="icon_close"></span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="checkout__input mb-2">
-                        <p class="my-0">Product Name<span>*</span></p>
-                        <input class="input-column" placeholder="Product Name" type="text" name="nama">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="checkout__input mb-2">
-                                <p class="my-0">Price<span>*</span></p>
-                                <input class="input-column" placeholder="Price" name="price" type="number" min="1">
+                <form id="form-create-product">
+                    <div class="modal-body">
+                        <div class="checkout__input alert alert-danger print-error-msg" style="display:none">
+                            <ul style="list-style-type: none;"></ul>
+                        </div>
+                        <div class="checkout__input mb-2">
+                            <p class="my-0">Product Name<span>*</span></p>
+                            <input class="input-column" placeholder="Product Name" type="text" name="nama" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="checkout__input mb-2">
+                                    <p class="my-0">Price<span>*</span></p>
+                                    <input class="input-column" placeholder="Price" name="price" type="number" min="1"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="checkout__input mb-2">
+                                    <p class="my-0">Weight (gr)<span>*</span></p>
+                                    <input class="input-column" placeholder="Weight" name="berat" type="number" min="1"
+                                        required>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="checkout__input mb-2">
-                                <p class="my-0">Weight (gr)<span>*</span></p>
-                                <input class="input-column" placeholder="Weight" name="weight" type="number" min="1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="checkout__input mb-2">
+                                    <p class="my-0">Stock<span>*</span></p>
+                                    <input class="input-column" placeholder="Stock" name="stok" type="number" min="1"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="checkout__input mb-2">
+                                    <p class="my-0">Category<span>*</span></p>
+                                    <select id="input-column-select" class="select2" name="kategori" required>
+                                        <option value="" disabled selected hidden>
+                                            Choose Category
+                                        </option>
+                                        @foreach ($data['kategori'] as $item)
+                                        <option value="{{$item}}">{{$item}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="checkout__input mb-2">
-                                <p class="my-0">Stock<span>*</span></p>
-                                <input class="input-column" placeholder="Stock" name="stock" type="number" min="1">
-                            </div>
+                        <div class="checkout__input mb-0">
+                            <p class="my-0">Description<span>*</span></p>
+                            <textarea class="input-column" id="deskripsi" name="deskripsi" rows="3" class="col-12"
+                                placeholder="Description" required>{{old('description')}}</textarea>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="checkout__input mb-2">
-                                <p class="my-0">Category<span>*</span></p>
-                                <select class="select2 input-column" name="kategori" required>
-                                    <option value="" disabled selected hidden>
-                                        Choose Category
-                                    </option>
-                                    @foreach ($data['kategori'] as $item)
-                                    <option value="{{$item}}">{{$item}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="checkout__input mb-2">
+                            <p class="my-0">Image<span>*</span></p>
+                            <input type="file" name="image" id="input-column-image"
+                                accept="image/png, image/jpg, image/jpeg" class="form-control">
+                        </div>
+                        <div class="checkout__input">
+                            <button type="button" class="btn btn-outline-danger"
+                                data-dismiss="modal">{{ __('Back') }}</button>
+                            <button type="submit" id="create-product-button"
+                                class="btn btn-outline-success">{{ __('Save') }}</button>
                         </div>
                     </div>
-                    <div class="checkout__input mb-2">
-                        <p class="my-0">Description<span>*</span></p>
-                        <textarea class="input-column" id="description" name="description" rows="3" class="col-12"
-                            placeholder="Description">{{old('description')}}</textarea>
-                    </div>
-                    <div class="checkout__input">
-                        <button type="button" class="btn btn-outline-danger"
-                            data-dismiss="modal">{{ __('Back') }}</button>
-                        <button type="submit" id="create-product-button"
-                            class="btn btn-outline-success">{{ __('Save') }}</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

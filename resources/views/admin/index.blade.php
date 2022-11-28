@@ -46,7 +46,7 @@
                         <tr>
                             <td class="p-1">{{ $product->id_barang }}</td>
                             <td class="p-1">
-                                <img src="{{asset($product->gambar_barang)}}" width="90px" alt="">
+                                <img src="{{asset($product->gambar_barang)}}" width="90px" alt="Gambar Produk">
                             </td>
                             <td class="p-1">{{ $product->nama_barang }}</td>
                             <td class="p-1">{{ $product->harga_barang }}</td>
@@ -60,7 +60,6 @@
                                     <input type="hidden" name="id_barang" value="{{$product->id_barang}}">
                                     <input type="submit" value="Delete" class="btn btn-danger delete-button btn-sm">
                                 </span>
-
                             </td>
                         </tr>
                         @empty

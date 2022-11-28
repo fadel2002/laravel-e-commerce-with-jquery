@@ -10,7 +10,7 @@
                     <div class="breadcrumb__text">
                         <h2>My Warung</h2>
                         <div class="breadcrumb__option">
-                            <span>Shopping Cart</span>
+                            <span>Admin</span>
                         </div>
                     </div>
                 </div>
@@ -64,18 +64,39 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
+                    <div class="shoping__checkout my-0 py-1">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="my-3">User Profile</h5>
+                            <h5 class="m-0 font-weight-normal d-flex align-items-center">
+                                {{$data['histori_produk']['user']['name']}}</h5>
+                        </div>
+                        <ul class="mb-2">
+                            <li class="font-weight-normal my-0 pb-1">Email <p class="my-0">
+                                    {{$data['histori_produk']['user']['email']}}</p>
+                            </li>
+                            <li class="font-weight-normal my-0 py-1">Phone Number <p class="my-0">
+                                    {{$data['histori_produk']['user']['no_telp_user']}}</p>
+                            </li>
+                            <li class="font-weight-normal my-0 py-1">Address
+                                <p class="my-0">
+                                    {{$data['histori_produk']['alamat_dikirim']}}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="shoping__checkout mt-0">
+                    <div class="shoping__checkout my-0 py-1">
                         <div class="d-flex justify-content-between">
                             <h5 class="my-3">
                                 Invoice ({{$data['histori_produk']['metode_transaksi']}})</h5>
-                            <h5 class="m-0 font-weight-normal d-flex align-items-center" style="text-align: right;">{{$data['histori_produk']['updated_at']->translatedFormat('d F
-                            Y h:m')}}</h5>
+                            <h5 class="m-0 font-weight-normal d-flex align-items-center" style="text-align: right;">
+                                {{$data['histori_produk']['updated_at']->translatedFormat('d F
+                                    Y h:m')}}
+                            </h5>
                         </div>
                         <ul>
                             <ul class="my-2">
-
                                 <li class="font-weight-normal">Subtotal <span>Rp
                                         {{$data['histori_produk']['total_transaksi'] - $data['ongkir']}}</span>
                                 </li>
@@ -83,11 +104,15 @@
                             <li class="font-weight-normal my-2">Ongkir <span>Rp
                                     {{$data['ongkir']}}</span>
                             </li>
-                            <li class="my-2">Total <span>Rp
+                            <li class="mt-2">Total <span>Rp
                                     {{$data['histori_produk']['total_transaksi']}}</span>
                             </li>
+                            @if($data['histori_produk']['status_transaksi'] == 1)
+                            <input type="hidden" class="input-column" name="id_transaksi"
+                                value="{{$data['histori_produk']['id_transaksi']}}">
+                            <a href="#" class="primary-btn" id="change-status-done">Done</a>
+                            @endif
                         </ul>
-                        <a href="{{route('shop.index')}}" class="primary-btn">CONTINUE SHOPPING</a>
                     </div>
                 </div>
             </div>
@@ -95,3 +120,7 @@
     <!-- Shoping Cart Section End -->
 </div>
 @endsection
+
+@push('script')
+<script src="{{asset('js/admin.js')}}"></script>
+@endpush

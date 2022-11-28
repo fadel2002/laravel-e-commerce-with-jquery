@@ -4,7 +4,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="shoping__product col-7">Product</th>
+                        <th>Nama</th>
+                        <th>Phone</th>
+                        <th>Address</th>
                         <th>Date</th>
                         <th>Quantity</th>
                         <th>Total</th>
@@ -20,13 +22,14 @@
                         }
                         $count = 0;
                         @endphp
-                        <td class="shoping__cart__item__d">
-                            @foreach($produk->detail_transaksis as $item)
-                            @php
-                            $count = $count + $item->kuantitas_barang;
-                            @endphp
-                            <img src="{{asset($item->barang->gambar_barang)}}" width="90px" alt="">
-                            @endforeach
+                        <td class="shoping__cart__total">
+                            {{$produk->user->name}}
+                        </td>
+                        <td class="shoping__cart__quantity__d">
+                            {{$produk->user->no_telp_user}}
+                        </td>
+                        <td class="shoping__cart__quantity__d">
+                            {{$produk->alamat_dikirim}}
                         </td>
                         <td class="shoping__cart__quantity__d">
                             <span>
@@ -39,6 +42,11 @@
                         </td>
                         <td class="shoping__cart__quantity__d">
                             <span>
+                                @foreach($produk->detail_transaksis as $item)
+                                @php
+                                $count = $count + $item->kuantitas_barang;
+                                @endphp
+                                @endforeach
                                 {{ $count }}
                             </span>
                         </td>
@@ -48,8 +56,8 @@
                                 {{ $produk->total_transaksi }}
                             </span>
                         </td>
-                        <td class="shoping__cart__item__close">
-                            <form action="{{route('history.detail')}}">
+                        <td class="shoping__cart__item__close pr-3">
+                            <form action="{{route('admin.transaksi-detail')}}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$produk->id_transaksi}}">
                                 <a href="#" onClick="event.preventDefault(); $(this).closest('form').submit();">
@@ -61,7 +69,7 @@
                     @empty
                     <tr>
                         <td class="shoping__cart__item">
-                            <h5>History Empty!</h5>
+                            <h5>Transaksi Empty!</h5>
                         </td>
                     </tr>
                     @endforelse
@@ -73,11 +81,5 @@
 <div class="row">
     <div class="col-6">
         {!! $data['produk']->links() !!}
-    </div>
-    <div class="col-6">
-        <div class="shoping__cart__btns">
-            <a href="{{route('shop.index')}}" class="primary-btn btn-success cart-btn cart-btn-right">CONTINUE
-                SHOPPING</a>
-        </div>
     </div>
 </div>

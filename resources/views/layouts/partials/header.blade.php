@@ -46,6 +46,7 @@
             <li><a href="#">Admin</a>
                 <ul class="header__menu__dropdown">
                     <li><a href="{{route('admin.index')}}">Produk</a></li>
+                    <li><a href="{{route('admin.transaksi')}}">Transaksi</a></li>
                 </ul>
             </li>
             @endif
@@ -130,6 +131,7 @@
                         <li id="btn-menu" class="admin-menu"><a href="#">Admin</a>
                             <ul class="header__menu__dropdown">
                                 <li id="btn-menu"><a href="{{route('admin.index')}}">Produk</a></li>
+                                <li id="btn-menu"><a href="{{route('admin.transaksi')}}">Transaksi</a></li>
                             </ul>
                         </li>
                         @endif
