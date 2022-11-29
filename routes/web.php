@@ -43,12 +43,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); 
     Route::get('/admin/product/detail/{id}', [AdminController::class, 'productDetail'])->name('admin.product-detail'); 
     Route::post('/admin/create-product', [AdminController::class, 'createProduct'])->name('admin.create-product'); 
+    Route::post('/admin/update-product', [AdminController::class, 'updateProduct'])->name('admin.update-product'); 
     Route::get('/admin/transkasi', [AdminController::class, 'transaksi'])->name('admin.transaksi'); 
     Route::get('/admin/more-transkasi', [AdminController::class, 'moreTransaksi'])->name('admin.more-transaksi'); 
     Route::get('/admin/transkasi/detail', [AdminController::class, 'transaksiDetail'])->name('admin.transaksi-detail'); 
     Route::delete('/admin/delete', [AdminController::class, 'delete'])->name('admin.delete'); 
     Route::get('/admin/more-data', [AdminController::class, 'moreData'])->name('admin.more-data'); 
     Route::put('/admin/change-status-done', [AdminController::class, 'changeStatusDone'])->name('admin.change-status-done'); 
+    Route::get('/admin/export-transaksi', [AdminController::class, 'exportTransaksi'])->name('admin.export-transaksi'); 
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

@@ -256,6 +256,10 @@ ol {
     content: "";
 }
 
+.site-btn-detail-product {
+    width: 100%;
+}
+
 .header__top__left ul li:last-child {
     margin-right: 0;
 }

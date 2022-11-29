@@ -8,6 +8,8 @@ use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportTransaksi;
 use Auth;
 
 class AdminController extends Controller
@@ -191,6 +193,82 @@ class AdminController extends Controller
         }
     }
 
+    public function exportTransaksi(Request $request){
+
+        $transaksis = Transaksi::with(['detailTransaksis:id_detail_transaksi,id_transaksi,id_barang,kuantitas_barang','detailTransaksis.barang:id_barang,harga_barang'])
+            ->where('status_transaksi', 2)
+            ->select('id_transaksi', 'total_transaksi')
+            ->orderBy('updated_at', 'desc');
+
+        if($request->start == null && $request->end == null ){
+            $transaksis = $transaksis->get();
+        }else if ($request->start != null && $request->end == null){
+            $transaksis = $transaksis
+                ->whereDate('updated_at', '>=', $request->start)
+                ->get();
+        }else if ($request->start == null && $request->end != null){
+            $transaksis = $transaksis
+                ->whereDate('updated_at', '<=', $request->end)
+                ->get();
+        }else {
+            $transaksis = $transaksis->whereDate('updated_at', '>=', $request->start)
+                ->whereDate('updated_at', '<=', $request->end)
+                ->get();
+        }
+
+        $barangs = Barang::select('id_barang', 'nama_barang', 'stok_barang', 'harga_barang')->get();
+
+        $data_hasil = [];
+
+        $total_pemasukan = 0;
+        $total_item_terjual = 0;
+
+        foreach($barangs as $barang){
+            $barang_terjual[(int)$barang->id_barang] = 0;
+            $harga_barang_terjual[(int)$barang->id_barang] = 0;
+        }
+
+        $data_cross_check_total = 0;
+
+        foreach ($transaksis as $transaksi){
+            $total_pemasukan += (int)$transaksi->total_transaksi;
+            if (!is_array($transaksi)) {
+                $transaksi = json_decode($transaksi);
+            }
+            foreach($transaksi->detail_transaksis as $dt){
+                $barang_terjual[$dt->id_barang] += (int)$dt->kuantitas_barang;
+                $total_item_terjual += (int)$dt->kuantitas_barang;
+                $harga_barang_terjual[$dt->id_barang] += ( (int)$dt->barang->harga_barang * (int)$dt->kuantitas_barang ) ;
+                $data_cross_check_total += ( (int)$dt->barang->harga_barang * (int)$dt->kuantitas_barang );
+            }
+
+            $data_cross_check_total += $this->ongkir;
+        }
+
+        $data_hasil = [
+            'total_item_terjual' => $total_item_terjual,
+            'total_pemasukan' => $total_pemasukan,
+            'barang_terjual' => $barang_terjual,
+            'harga_barang_terjual' => $harga_barang_terjual,
+            'start' => $request->start,
+            'end' => $request->end,
+        ];
+
+        if ($total_pemasukan != $data_cross_check_total){
+            \Alert::warning('Failed', 'Failed To Download Excel');
+            return redirect()->back();
+        }
+        
+        // return response()->json([
+        //     // 'transaksis' => $transaksis,
+        //     // 'barangs' => $barangs,
+        //     'data' => $data_hasil,
+        //     'total_cross_check' => $data_cross_check_total,
+        // ], 200);
+
+        return Excel::download(new ExportTransaksi($data_hasil), 'export-transaksi.xlsx');
+    }
+
     /* Post Put and Delete Method */
     // ajax
     public function delete(Request $request){
@@ -213,7 +291,12 @@ class AdminController extends Controller
                     ]);
                 }
 
+                if (file_exists(public_path()."/".$barang->gambar_barang)){
+                    \File::delete(public_path()."/".$barang->gambar_barang);
+                }
+
                 $bool_b = Barang::where('id_barang', $request->id_barang)->delete();
+                
                 $bool_dt = DetailTransaksi::where('id_barang', $request->id_barang)->delete();
                 
                 return response()->json([
@@ -270,6 +353,68 @@ class AdminController extends Controller
             }
         }
     }
+
+        // ajax
+        public function updateProduct(Request $request){
+            if ($request->ajax()){
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'id_barang' => 'required',
+                        'kategori' => 'required',
+                        'nama' => 'required',
+                        'price' => 'required|numeric',
+                        'berat' => 'required|numeric',
+                        'stok' => 'required|numeric',
+                        'deskripsi' => 'required',
+                    ]);
+
+                    $boolImage = null;
+                    
+                    if ($request->hasFile('image')){
+                        $imageValid = Validator::make($request->all(), [
+                            'image' => 'image|mimes:jpeg,png,jpg|max:4196',
+                        ]);
+                        if (!$imageValid->passes()){
+                            return response()->json(['error'=>$imageValid->errors()->all()]); 
+                        }
+
+                        $barang = Barang::where('id_barang', $request->id_barang)->first();
+                        
+                        if (file_exists(public_path()."/".$barang->gambar_barang)){
+                            \File::delete(public_path()."/".$barang->gambar_barang);
+                        }
+
+                        $image = time().'.'.$request->image->extension();
+                        $request->image->move(public_path('images/products'), $image);
+                        // return response()->json(['status'=> 200, 'status_update' => $request->all()]);
+                        $boolImage = Barang::where('id_barang', $request->id_barang)->update([
+                            'gambar_barang' => 'images/products/'.$image,
+                        ]);
+                    }
+                    
+                    if ($validator->passes()) {
+                        
+                        $bool = Barang::where('id_barang', $request->id_barang)->update([
+                            'nama_barang' => $request->nama,
+                            'stok_barang' => $request->stok,
+                            'harga_barang' => $request->price,
+                            'deskripsi_barang' => $request->deskripsi,
+                            'nama_kategori' => $request->kategori,
+                            'berat_barang' => $request->berat,
+                        ]);
+
+                        $barang = Barang::where('id_barang', $request->id_barang)->first();
+                        
+                        return response()->json(['status'=> 200, 'status_update' => $barang, 'img_update_status' => $boolImage]);
+                    }
+                
+                    return response()->json(['error'=>$validator->errors()->all()]);    
+                }catch (ModelNotFoundException $exception) {
+                    
+                    return back()->withError($exception->getMessage())->withInput();
+                }
+            }
+        }
 
     // ajax
     public function changeStatusDone(Request $request){

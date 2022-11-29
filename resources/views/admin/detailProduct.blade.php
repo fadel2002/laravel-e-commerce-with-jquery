@@ -28,7 +28,11 @@
                     <div class="row">
                         @csrf
                         <div class="col-lg-8 col-md-6">
-                            <div class="alert alert-danger" style="display:none"></div>
+                            <input class="input-column" type="hidden" name="id_barang"
+                                value="{{$data['barang']['id_barang']}}">
+                            <div class="checkout__input alert alert-danger print-error-msg" style="display:none">
+                                <ul style="list-style-type: none;"></ul>
+                            </div>
                             <div class="checkout__input mb-2">
                                 <p class="my-0">Product Name<span>*</span></p>
                                 <input class="input-column" placeholder="Product Name" type="text" name="nama" required
@@ -62,12 +66,13 @@
                                     <div class="checkout__input mb-2">
                                         <p class="my-0">Category<span>*</span></p>
                                         <select id="input-column-select" class="select2" name="kategori" required>
-                                            <option value="{{$data['barang']['nama_kategori']}}" disabled selected
-                                                hidden>
-                                                Choose Category
+                                            <option value="{{$data['barang']['nama_kategori']}}" selected hidden>
+                                                {{$data['barang']['nama_kategori']}}
                                             </option>
                                             @foreach ($data['kategori'] as $item)
+                                            @if ($item != $data['barang']['nama_kategori'])
                                             <option value="{{$item}}">{{$item}}</option>
+                                            @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -88,10 +93,12 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order mt-4">
                                 <h4 class="mb-4 font-weight-normal">Gambar</h4>
-                                <img src="{{asset($data['barang']['gambar_barang'])}}" alt="Product Image">
-                                <button type="submit" id="" class="site-btn mt-4">UPDATE
-                                    PRODUCT</button>
+                                <img id="product-image" src="{{asset($data['barang']['gambar_barang'])}}"
+                                    alt="Product Image">
                             </div>
+                            <button type="submit" id="site-btn-detail-product"
+                                class="site-btn mt-4 site-btn-detail-product">UPDATE
+                                PRODUCT</button>
                         </div>
                     </div>
                 </form>
@@ -103,5 +110,5 @@
 @endsection
 
 @push('script')
-<script src="{{asset('js/shop.js')}}"></script>
+<script src="{{asset('js/admin.js')}}"></script>
 @endpush

@@ -221,4 +221,65 @@ $(document).ready(function () {
             },
         });
     }
+
+    $(document).on("click", "#site-btn-detail-product", function () {
+        event.preventDefault();
+
+        let kategori = $("#input-column-select").val();
+        let formData = new FormData();
+        // create_product_item(formData);
+        if (validateCreateProduct($(".input-column"))) {
+            formData.append("kategori", kategori);
+            formData.append("image", $("#input-column-image").prop("files")[0]);
+            $(".input-column").each(function () {
+                // console.log(this.name, this.value);
+                formData.append(this.name, this.value);
+            });
+            // for (const pair of formData.entries()) {
+            //     console.log(`${pair[0]}, ${pair[1]}`);
+            // }
+            update_data_product(formData);
+        }
+    });
+
+    function update_data_product(formData) {
+        $.ajax({
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            type: "POST",
+            url: "/admin/update-product",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // console.log(data.status_update);
+
+                if (data.img_update_status == 1) {
+                    $("#product-image").attr(
+                        "src",
+                        `/${data.status_update.gambar_barang}`
+                    );
+                }
+                if ($.isEmptyObject(data.error)) {
+                    swal({
+                        title: "Done!",
+                        text: "Update Product Success",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                    }).catch(function (timeout) {});
+                } else {
+                    printErrorMsg(data.error);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                swal({
+                    title: "Interupt!",
+                    text: "Update Product Failed",
+                    type: "warning",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).catch(function (timeout) {});
+            },
+        });
+    }
 });
