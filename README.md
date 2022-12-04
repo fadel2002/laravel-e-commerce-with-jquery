@@ -1,6 +1,6 @@
 ## Cara nge run
 
-1. buat .env
+1. buat file .env
 1. configurasi .env sesuai dengan dbs yg dipakai
 1. cmd `composer update`
 1. cmd `composer install`
