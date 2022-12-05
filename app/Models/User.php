@@ -47,4 +47,17 @@ class User extends Authenticatable
     public function transaksis(){
         return $this->hasMany(Transaksi::class, 'id_user', 'id_user');
     }  
+
+    public function canJoinRoom($roomId){
+        $granted = false;
+
+        $room = Room::findOrFail($roomId);
+        $users = explode(":", $room->users);
+        foreach($users as $id){
+            if ($this->id == $id){
+                $granted = true;
+            }
+        }
+        return $granted;
+    }
 }

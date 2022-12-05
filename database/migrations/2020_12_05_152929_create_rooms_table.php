@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pesans', function (Blueprint $table) {
-            $table->id('id_pesan');
-            $table->foreignId('id_room')->references('id_room')->on('rooms')->onDelete('cascade')->nullable();
-            $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade')->nullable();
-            $table->string('message')->nullable();
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->id('id_room');
+            $table->string('users')->nullable();;
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pesans');
+        Schema::dropIfExists('rooms');
     }
 };

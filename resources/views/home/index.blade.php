@@ -10,7 +10,7 @@
                     <div class="breadcrumb__text">
                         <h2>My Warung</h2>
                         <div class="breadcrumb__option">
-                            <span>Free Pickup and Delivery Available</span>
+                            <span>Pickup and Delivery Available</span>
                         </div>
                     </div>
                 </div>

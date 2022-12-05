@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::get('history/detail', [HistoryController::class, 'detail'])->name('history.detail');
 
     Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('chat/load-chat', [ChatController::class, 'loadChat'])->name('chat.load-chat');
+    Route::post('chat/save-chat', [ChatController::class, 'saveChat'])->name('chat.save-chat');
+    
+    Route::post('room/create', [RoomController::class, 'create'])->name('room.create');
+
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -56,9 +61,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/tes', [TesController::class, 'index'])->name('tes');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
