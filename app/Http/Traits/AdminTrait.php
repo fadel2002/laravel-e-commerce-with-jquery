@@ -10,6 +10,7 @@ trait AdminTrait {
         $admin = User::where('tipe_user', 2)->first();
 
         return [
+            'id' => $admin->id_user,
             'nama' => $admin->name,
             'email' => $admin->email,
             'no_telp' => $admin->no_telp_user,

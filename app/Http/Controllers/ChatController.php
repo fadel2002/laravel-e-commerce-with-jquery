@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\Pesan;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use Illuminate\Http\Request;
@@ -18,9 +19,27 @@ class ChatController extends Controller
     public function index(){
         $data = [];
 
-        $data = $this->getAllBarangWithPaginate();
+        $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+        if (!$transaksi){
+            $transaksi['total_transaksi'] = 0;
+        }
+        
+        $data = [
+            'kategori' => $this->kategori,
+            'admin' => $this->dataAdmin(),
+            'total_transaksi' => $transaksi['total_transaksi'],
+        ];
 
-        return view('chat.index', compact('data'));
+        if (auth()->user()->tipe_user == 2){
+            $data['transaksis'] = Transaksi::with('user:id_user,name,no_telp_user')->groupBy('id_user')->where('status_transaksi', 1)->get();
+            // return response()->json($data, 200);
+            return view('admin.chat', compact('data'));
+        }else {
+            $data['transaksi'] = Transaksi::with('user:id_user,name,no_telp_user')->groupBy('id_user')->where([['status_transaksi', 1], ['id_user', Auth::user()->id_user]])->first();
+            
+            // return response()->json($data, 200);
+            return view('chat.index', compact('data'));
+        }
     }
 
     public function saveChat(Request $request){
@@ -28,22 +47,31 @@ class ChatController extends Controller
         $userId = auth()->user()->id_user;
         $message = $request->message;
 
-        Pesan::create([
-            'room_id' => $roomId,
-            'user_id' => $userId,
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => [
+        //         'id' => $roomId,
+        //         'message' => $message
+        //     ]
+        // ], 200);
+        
+        // broadcast(new \App\Events\SendMessage($roomId, $userId, $message));
+        broadcast(new \App\Events\SendMessage($roomId, $userId, $message))->toOthers();
+        
+        $pesan = Pesan::create([
+            'id_room' => $roomId,
+            'id_user' => $userId,
             'message' => $message,
-        ])
-
-        broadcast(new SendMessage($roomId, $userId, $message));
+        ]);
         
         return response()->json([
             'success' => true,
-            'message' => 'Pesan berhasil disimpan'
+            'message' => $pesan
         ], 200);
     }
 
     public function loadChat($roomId){
-        $message = Pesan::where('room_id', $roomId)->orderBy('updated_at', 'asc')->get();
+        $message = Pesan::where('id_room', $roomId)->orderBy('updated_at', 'asc')->get();
         
         return response()->json([
             'success' => true,

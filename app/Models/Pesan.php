@@ -16,4 +16,9 @@ class Pesan extends Model
         'id_user',
         'message',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
 }

@@ -54,10 +54,14 @@ class User extends Authenticatable
         $room = Room::findOrFail($roomId);
         $users = explode(":", $room->users);
         foreach($users as $id){
-            if ($this->id == $id){
+            if ($this->id_user == $id){
                 $granted = true;
             }
         }
         return $granted;
+    }
+
+    public function pesans(){
+        return $this->hasMany(Pesan::class, 'id_user', 'id_user');
     }
 }

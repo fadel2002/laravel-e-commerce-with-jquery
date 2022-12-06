@@ -36,6 +36,10 @@ class SendMessage implements ShouldBroadcast
     public function broadcastOn()
     {
         return new PresenceChannel('chat.'.$this->roomId);
-        // return new PrivateChannel('chat.'.$this->roomId);
     }
+
+    // public function broadcastAs()
+    // {
+    //     return 'sendMessage';
+    // }
 }
