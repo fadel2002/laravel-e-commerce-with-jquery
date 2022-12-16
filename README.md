@@ -1,6 +1,7 @@
 ## Prerequisite
-1. php 8.0.*
-1. buat file .env 
+
+1. php 8.1.\*
+1. buat file .env
 1. configurasi .env sesuai dengan dbs yg dipakai
 1. cmd `composer update`
 1. cmd `composer install`
@@ -16,9 +17,8 @@
 1. cmd `php artisan websockets:serve`
 1. cmd `npm run dev`
 
-Uncomment 
-
 ## Note
+
 pusher/pusher-php-server versi 7.2 masih eror sehingga tidak bisa melakukan listen terhadap event, maka digunakan pusher ver 7.0.
 
 ## File .env
@@ -83,4 +83,3 @@ VITE_PUSHER_PORT="${PUSHER_PORT}"
 VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
-
