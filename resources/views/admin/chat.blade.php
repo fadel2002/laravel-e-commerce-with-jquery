@@ -35,7 +35,7 @@
                         <a href="#" class="chat_list d-block user" data-id="{{$transaksi['user']['id_user']}}">
                             <div class="chat_people">
                                 <div class="chat_ib">
-                                    <h5>{{$transaksi['user']['name']}} {{$transaksi['user']['id_user']}}<span
+                                    <h5>{{$transaksi['user']['name']}}<span
                                             class="chat_date">{{$transaksi['updated_at']->translatedFormat('d F')}}</span>
                                     </h5>
                                 </div>

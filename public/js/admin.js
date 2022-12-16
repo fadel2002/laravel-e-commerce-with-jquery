@@ -146,7 +146,7 @@ $(document).ready(function () {
                             `<td class="p-1">${data.barang.deskripsi_barang}</td>`,
                             `<td class="p-1" style="justify-content-center">
                                 <span class="d-flex justify-content-around delete-span" style="border:none;">
-                                    <a href="#" class="btn btn-success btn-sm">Edit</a>
+                                    <a href="/admin/product/detail/${data.barang.id_barang}" class="btn btn-success btn-sm">Edit</a>
                                     <input type="hidden" name="id_barang" value="${data.barang.id_barang}">
                                     <input type="submit" value="Delete" class="btn btn-danger delete-button btn-sm">
                                 </span>
@@ -183,10 +183,53 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on("click", "#get-user-location", function () {
+        event.preventDefault();
+        var id = $(".input-column[name=id_transaksi]").val();
+        getUserLocation(id);
+    });
+
+    function getUserLocation(id_transaksi) {
+        $.ajax({
+            type: "GET",
+            url: "/admin/get-user-location",
+            data: {
+                id_transaksi: id_transaksi,
+            },
+            success: function (data) {
+                // console.log(data.location);
+                window.open(
+                    `https://google.com/maps?q=${data.location.latitude}, ${data.location.longitude}`,
+                    "_blank"
+                );
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                swal({
+                    title: "Interupt!",
+                    text: "Confirm Failed",
+                    type: "warning",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).catch(function (timeout) {});
+            },
+        });
+    }
+
     $(document).on("click", "#change-status-done", function () {
         event.preventDefault();
         var id = $(".input-column[name=id_transaksi]").val();
-        changeStatusDone(id, $(this));
+        let $button = $(this);
+        swal({
+            title: "Confirmation!",
+            text: "Anda yakin mengubah status transaksi ini",
+            type: "warning",
+            showConfirmButton: true,
+            showCancelButton: true,
+        })
+            .then(function (val) {
+                if (val) changeStatusDone(id, $button);
+            })
+            .catch(function (timeout) {});
     });
 
     function changeStatusDone(id_transaksi, $button) {
@@ -201,6 +244,7 @@ $(document).ready(function () {
                 if (data.status == 1) {
                     $(".input-column[name=id_transaksi]").remove();
                     $button.remove();
+                    $("#get-user-location-li").remove();
                     return swal({
                         title: "Done!",
                         text: "Confirm Success",

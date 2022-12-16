@@ -16,6 +16,8 @@ class Transaksi extends Model
         'total_transaksi',
         'status_transaksi',
         'alamat_dikirim',
+        'longitude',
+        'latitude',
         'id_user',
     ];
     

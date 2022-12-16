@@ -160,9 +160,18 @@ $(document).ready(function () {
                 kuantitas: data[3],
                 harga: data[4],
             },
-            success: function (data) {
-                data = data.data;
-                // console.log(data);
+            success: function (datas) {
+                if (datas.status != 200) {
+                    // console.log(datas.status);
+                    swal({
+                        title: "Interupt!",
+                        text: "Stok Tidak Cukup",
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                    return;
+                }
                 $(".span-total-transaksi").text(
                     "Rp " + data["total_transaksi"]
                 );
@@ -212,9 +221,19 @@ $(document).ready(function () {
             type: "POST",
             url: "/shop/update-cart-ajax",
             data: { updated_data: data, id_transaksi: id },
-            success: function (data) {
-                data = data.data;
-                // console.log(data);
+            success: function (datas) {
+                data = datas.data;
+                // console.log(datas.status);
+                if (datas.status != 200) {
+                    swal({
+                        title: "Interupt!",
+                        text: `Stok ${datas.nama_barang} Tidak Cukup`,
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).catch(function (timeout) {});
+                    return;
+                }
                 for (let i = 0; i < data["transaksi_per_data"].length; i++) {
                     $("#span-transaksi-per-data-" + i).text(
                         "Rp " + data["transaksi_per_data"][i]
@@ -261,8 +280,25 @@ $(document).ready(function () {
                 timer: 1500,
             }).catch(function (timeout) {});
         }
-        // console.log(data);
-        ajaxCheckoutPayment(data);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // console.log(
+                //     position.coords.latitude,
+                //     position.coords.longitude
+                // );
+                data["latitude"] = position.coords.latitude;
+                data["longitude"] = position.coords.longitude;
+                // console.log(data);
+                ajaxCheckoutPayment(data);
+            },
+            (err) => {
+                console.log(err);
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+            }
+        );
     });
 
     function ajaxCheckoutPayment(data) {
@@ -273,6 +309,8 @@ $(document).ready(function () {
                 address: data["address"],
                 id_transaksi: data["id_transaksi"],
                 payment: data["payment"],
+                latitude: data["latitude"],
+                longitude: data["longitude"],
             },
             timeout: 5000,
             success: function (data) {

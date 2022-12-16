@@ -77,11 +77,17 @@
                             <li class="font-weight-normal my-0 py-1">Phone Number <p class="my-0">
                                     {{$data['histori_produk']['user']['no_telp_user']}}</p>
                             </li>
-                            <li class="font-weight-normal my-0 py-1">Address
+                            <li class="font-weight-normal my-0 py-1 wrap-long-text">
+                                Address
                                 <p class="my-0">
                                     {{$data['histori_produk']['alamat_dikirim']}}
                                 </p>
                             </li>
+                            @if($data['histori_produk']['status_transaksi'] == 1)
+                            <li class="font-weight-normal my-0 pt-3 pb-1" id="get-user-location-li">
+                                <a href="#" class="primary-btn" id="get-user-location">User Location</a>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

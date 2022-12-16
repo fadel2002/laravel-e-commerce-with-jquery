@@ -50,7 +50,7 @@ class ShopController extends Controller
             $data = [];
             
             $barang = Barang::with('gambarBarangs')->where('id_barang', $id)->first();
-            $barang_mirip = Barang::where('nama_kategori', $barang->nama_kategori)->limit(4)->get();
+            $barang_mirip = Barang::where('nama_kategori', $barang->nama_kategori)->where('id_barang', '!=', $id)->limit(4)->get();
 
             $cart = Transaksi::where([['id_user', Auth::user()->id_user], ['status_transaksi', 0]])->first();
             $cart_history = 0;
@@ -294,6 +294,14 @@ class ShopController extends Controller
 
                 $sum = 0;
 
+                $stok_tersedia = Barang::where('id_barang', $request->id_barang)->first()->stok_barang;
+
+                if ($request->kuantitas > $stok_tersedia){
+                    return response()->json([
+                        'status' => -1,
+                    ], 200);
+                }
+
                 if ($transaksi){
                     $detail_transaksi = DetailTransaksi::where([['id_transaksi', $transaksi->id_transaksi],['id_barang', $request->id_barang]])->first();
                     $total_transaksi = $transaksi->total_transaksi;
@@ -338,6 +346,7 @@ class ShopController extends Controller
                 }
 
                 return response()->json([
+                    'status' => 200,
                     'data' => [
                         'total_transaksi' => $sum,
                     ],
@@ -366,8 +375,15 @@ class ShopController extends Controller
 
                     $dt = DetailTransaksi::with(['barang:id_barang,harga_barang'])->where('id_detail_transaksi', $id_dt)->first();
                     
+                    $stok_tersedia = Barang::where('id_barang', $dt->id_barang)->first();
+
                     if ($kuantitas_baru == 0){
                         $dt->delete();
+                    }else if($kuantitas_baru > $stok_tersedia->stok_barang){
+                        return response()->json([
+                            'status' => -1,
+                            'nama_barang' => $stok_tersedia->nama_barang,
+                        ], 200);
                     }
 
                     $dt->update([
@@ -383,6 +399,7 @@ class ShopController extends Controller
                 ]);
                 
                 return response()->json([
+                    'status' => 200,
                     'data' => [
                         'total_transaksi' => $sum,
                         'transaksi_per_data' => $sum_per_data
@@ -431,6 +448,8 @@ class ShopController extends Controller
                     'address' => 'required|min:10',
                     'id_transaksi' => 'required',
                     'payment' => 'required',
+                    'longitude' => 'required',
+                    'latitude' => 'required',
                 ]);
          
                 if ($validator->fails()) {
@@ -503,7 +522,9 @@ class ShopController extends Controller
                     'status_transaksi' => 1,
                     'metode_transaksi' => $request['payment'],
                     'alamat_dikirim' => $request['address'],
-                ]);;
+                    'latitude' => $request['latitude'],
+                    'longitude' => $request['longitude'],
+                ]);
                 
                 return response()->json([
                     'data' => [

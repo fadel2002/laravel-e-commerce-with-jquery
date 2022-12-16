@@ -17,7 +17,10 @@ class ContactController extends Controller
     {
         try {
             $data = [];
-            $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            $transaksi = null;
+            if (Auth::check()){
+                $transaksi = Transaksi::where([['status_transaksi', 0],['id_user', Auth::user()->id_user]])->first();
+            }  
             if (!$transaksi){
                 $transaksi['total_transaksi'] = 0;
             }

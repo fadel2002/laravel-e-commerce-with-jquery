@@ -79,6 +79,10 @@ ol {
   Helper CSS
 -----------------------*/
 
+.wrap-long-text {
+    word-wrap: break-word;
+}
+
 .button-active {
     background: #7fad39;
     border-color: #7fad39;
@@ -1948,6 +1952,8 @@ ol {
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity__d {
     width: auto;
+    max-width: 225px;
+    word-wrap: break-word;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty {

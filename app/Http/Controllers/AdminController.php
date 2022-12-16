@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Barang;
 use App\Models\Transaksi;
+use App\Models\Pesan;
 use App\Models\DetailTransaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -228,7 +229,7 @@ class AdminController extends Controller
             $harga_barang_terjual[(int)$barang->id_barang] = 0;
         }
 
-        $data_cross_check_total = 0;
+        // $data_cross_check_total = 0; // debug variable
 
         foreach ($transaksis as $transaksi){
             $total_pemasukan += (int)$transaksi->total_transaksi;
@@ -239,10 +240,10 @@ class AdminController extends Controller
                 $barang_terjual[$dt->id_barang] += (int)$dt->kuantitas_barang;
                 $total_item_terjual += (int)$dt->kuantitas_barang;
                 $harga_barang_terjual[$dt->id_barang] += ( (int)$dt->barang->harga_barang * (int)$dt->kuantitas_barang ) ;
-                $data_cross_check_total += ( (int)$dt->barang->harga_barang * (int)$dt->kuantitas_barang );
+                // $data_cross_check_total += ( (int)$dt->barang->harga_barang * (int)$dt->kuantitas_barang ); // debug variable
             }
 
-            $data_cross_check_total += $this->ongkir;
+            // $data_cross_check_total += $this->ongkir; // debug variable
         }
 
         $data_hasil = [
@@ -254,19 +255,21 @@ class AdminController extends Controller
             'end' => $request->end,
         ];
 
-        if ($total_pemasukan != $data_cross_check_total){
-            \Alert::warning('Failed', 'Failed To Download Excel');
-            return redirect()->back();
-        }
-        
-        // return response()->json([
-        //     // 'transaksis' => $transaksis,
-        //     // 'barangs' => $barangs,
-        //     'data' => $data_hasil,
-        //     'total_cross_check' => $data_cross_check_total,
-        // ], 200);
+        // debug variable
+        // if ($total_pemasukan != $data_cross_check_total){
+        //     \Alert::warning('Failed', "Failed To Download Excel [CrossCheck " . $data_cross_check_total . "] [Actual " . $total_pemasukan . "]");
+        //     return redirect()->back();
+        // }
 
         return Excel::download(new ExportTransaksi($data_hasil), 'export-transaksi.xlsx');
+    }
+
+    public function getUserLocation(Request $request){
+        $loc = Transaksi::where('id_transaksi', $request->id_transaksi)->select('latitude', 'longitude')->first();
+        return response()->json([
+            'status' => 200,
+            'location' => $loc,
+        ], 200);   
     }
 
     /* Post Put and Delete Method */
@@ -422,10 +425,19 @@ class AdminController extends Controller
             try {
                 $data = [];
                 
+                $transaksi = Transaksi::where('id_transaksi', $request->id_transaksi)->first();
+
+                $banyakTransaksi = count(Transaksi::where([['id_user', $transaksi->id_user],['status_transaksi', 1]])->get());
+
+                if($banyakTransaksi == 1){
+                    $room = Pesan::where('id_user', $transaksi->id_user)->first();
+                    if($room) Pesan::where('id_room', $room->id_room)->delete();
+                }
+
                 $bool = Transaksi::where([['id_transaksi', $request->id_transaksi],['status_transaksi', 1]])->update([
                     'status_transaksi' => 2,
                 ]);
-                       
+
                 return response()->json([
                     'status' => $bool,
                 ], 200);

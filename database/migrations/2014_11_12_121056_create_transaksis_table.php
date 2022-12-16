@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id('id_transaksi');
             $table->string('metode_transaksi')->nullable();
             $table->bigInteger('total_transaksi')->nullable();
+            $table->decimal('longitude', 11, 7)->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
             // 0 masih dalam cart
             // 1 sudah checkout atau bayar dan belum diterima user
             // 2 sudah checkout atau bayar dan sudah diterima user

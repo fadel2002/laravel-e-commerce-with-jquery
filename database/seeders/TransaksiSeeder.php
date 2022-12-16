@@ -21,6 +21,8 @@ class TransaksiSeeder extends Seeder
             'total_transaksi' => 30000,
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan Surabaya',
             'id_user' => 2,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
 
         Transaksi::create([
@@ -29,6 +31,8 @@ class TransaksiSeeder extends Seeder
             'total_transaksi' => 45000,
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 3,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
 
         Transaksi::create([
@@ -38,6 +42,8 @@ class TransaksiSeeder extends Seeder
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 2,
             'status_transaksi' => 2,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
 
         Transaksi::create([
@@ -47,6 +53,8 @@ class TransaksiSeeder extends Seeder
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 2,
             'status_transaksi' => 2,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
 
         Transaksi::create([
@@ -56,6 +64,8 @@ class TransaksiSeeder extends Seeder
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 2,
             'status_transaksi' => 2,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
 
         Transaksi::create([
@@ -65,6 +75,8 @@ class TransaksiSeeder extends Seeder
             'alamat_dikirim' => 'Jl Praja Mukti 2 Blok 1 C Prapatan',
             'id_user' => 2,
             'status_transaksi' => 2,
+            'latitude' => -7.2930927,
+            'longitude' => 112.7977454,
         ]);
     }
 }

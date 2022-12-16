@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); 
     Route::get('/admin/product/detail/{id}', [AdminController::class, 'productDetail'])->name('admin.product-detail'); 
@@ -56,10 +58,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/more-data', [AdminController::class, 'moreData'])->name('admin.more-data'); 
     Route::put('/admin/change-status-done', [AdminController::class, 'changeStatusDone'])->name('admin.change-status-done'); 
     Route::get('/admin/export-transaksi', [AdminController::class, 'exportTransaksi'])->name('admin.export-transaksi'); 
+    Route::get('/admin/get-user-location', [AdminController::class, 'getUserLocation'])->name('admin.get-user-location'); 
 });
 
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
 
 Route::get('/tes', [TesController::class, 'index'])->name('tes');
+Route::post('/tes-post', [TesController::class, 'post'])->name('tes.post');
+
 
 require __DIR__.'/auth.php';
