@@ -78,6 +78,9 @@ ol {
 /*---------------------
   Helper CSS
 -----------------------*/
+.edit-image {
+    font-size: 14px !important;
+}
 
 .wrap-long-text {
     word-wrap: break-word;

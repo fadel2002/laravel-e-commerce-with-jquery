@@ -24,7 +24,7 @@
         <div class="container">
             <div class="checkout__form">
                 <h4>Product Detail</h4>
-                <form>
+                <form id="detail-product-form">
                     <div class="row">
                         @csrf
                         <div class="col-lg-8 col-md-6">
@@ -80,21 +80,24 @@
                             </div>
                             <div class="checkout__input mb-0">
                                 <p class="my-0">Description<span>*</span></p>
-                                <textarea class="input-column" id="deskripsi" name="deskripsi" rows="3" class="col-12"
+                                <textarea class="input-column" id="deskripsi" name="deskripsi" rows="4" class="col-12"
                                     placeholder="Description"
                                     required>{{$data['barang']['deskripsi_barang']}}</textarea>
                             </div>
                             <div class="checkout__input mb-2">
-                                <p class="my-0">Image<span>*</span></p>
+                                <p class="my-0">Main Image<span>*</span></p>
                                 <input type="file" name="image" id="input-column-image"
                                     accept="image/png, image/jpg, image/jpeg" class="form-control">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
-                            <div class="checkout__order mt-4">
-                                <h4 class="mb-4 font-weight-normal">Gambar</h4>
+                            <div class="checkout__order mt-4 py-4">
+                                <h4 class="mb-4 font-weight-normal">Image</h4>
                                 <img id="product-image" src="{{asset($data['barang']['gambar_barang'])}}"
                                     alt="Product Image">
+                                <button onclick="event.preventDefault()" data-toggle="modal" data-target="#EditImage"
+                                    class="site-btn py-2 edit-image">Edit
+                                    Image</button>
                             </div>
                             <button type="submit" id="site-btn-detail-product"
                                 class="site-btn mt-4 site-btn-detail-product">UPDATE
@@ -106,6 +109,7 @@
         </div>
     </section>
     <!-- Checkout Section End -->
+    @include('admin.modal.edit-image')
 </div>
 @endsection
 

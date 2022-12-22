@@ -15,7 +15,7 @@ class GambarBarangSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i<5; $i++){
+        for ($i=0; $i<10; $i++){
             GambarBarang::create([
                 'id_barang' => 1,
                 'gambar_barang' => 'images/products/' . $i%3+1 . '.jpg',

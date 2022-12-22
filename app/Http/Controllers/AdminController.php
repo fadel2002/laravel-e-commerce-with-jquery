@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\Pesan;
 use App\Models\DetailTransaksi;
+use App\Models\GambarBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -169,20 +170,23 @@ class AdminController extends Controller
                 $transaksi['total_transaksi'] = 0;
             }
 
+            $gambar_lain = GambarBarang::where('id_barang', $id)->select('id_gambar_barang', 'id_barang', 'gambar_barang')->get();
+
             // return response()->json([
             //     'admin' => $this->dataAdmin(),
             //     'produk' => $transaksi,
             //     'barang' => $barang,
+            //     'gambar_lain' => $gambar_lain,
             //     'total_transaksi' => $transaksi['total_transaksi'],
             //     'ongkir' => $this->ongkir,
             // ], 200);
-            
             
             $data = [
                 'admin' => $this->dataAdmin(),
                 'kategori' => $this->kategori,
                 'produk' => $transaksi,
                 'barang' => $barang,
+                'gambar_lain' => $gambar_lain,
                 'total_transaksi' => $transaksi['total_transaksi'],
                 'ongkir' => $this->ongkir,
             ];            
@@ -357,67 +361,67 @@ class AdminController extends Controller
         }
     }
 
-        // ajax
-        public function updateProduct(Request $request){
-            if ($request->ajax()){
-                try {
-                    $validator = Validator::make($request->all(), [
-                        'id_barang' => 'required',
-                        'kategori' => 'required',
-                        'nama' => 'required',
-                        'price' => 'required|numeric',
-                        'berat' => 'required|numeric',
-                        'stok' => 'required|numeric',
-                        'deskripsi' => 'required',
+    // ajax
+    public function updateProduct(Request $request){
+        if ($request->ajax()){
+            try {
+                $validator = Validator::make($request->all(), [
+                    'id_barang' => 'required',
+                    'kategori' => 'required',
+                    'nama' => 'required',
+                    'price' => 'required|numeric',
+                    'berat' => 'required|numeric',
+                    'stok' => 'required|numeric',
+                    'deskripsi' => 'required',
+                ]);
+
+                $boolImage = null;
+                
+                if ($request->hasFile('image')){
+                    $imageValid = Validator::make($request->all(), [
+                        'image' => 'image|mimes:jpeg,png,jpg|max:4196',
+                    ]);
+                    if (!$imageValid->passes()){
+                        return response()->json(['error'=>$imageValid->errors()->all()]); 
+                    }
+
+                    $barang = Barang::where('id_barang', $request->id_barang)->first();
+                    
+                    if (file_exists(public_path()."/".$barang->gambar_barang)){
+                        \File::delete(public_path()."/".$barang->gambar_barang);
+                    }
+
+                    $image = time().'.'.$request->image->extension();
+                    $request->image->move(public_path('images/products'), $image);
+                    // return response()->json(['status'=> 200, 'status_update' => $request->all()]);
+                    $boolImage = Barang::where('id_barang', $request->id_barang)->update([
+                        'gambar_barang' => 'images/products/'.$image,
+                    ]);
+                }
+                
+                if ($validator->passes()) {
+                    
+                    $bool = Barang::where('id_barang', $request->id_barang)->update([
+                        'nama_barang' => $request->nama,
+                        'stok_barang' => $request->stok,
+                        'harga_barang' => $request->price,
+                        'deskripsi_barang' => $request->deskripsi,
+                        'nama_kategori' => $request->kategori,
+                        'berat_barang' => $request->berat,
                     ]);
 
-                    $boolImage = null;
+                    $barang = Barang::where('id_barang', $request->id_barang)->first();
                     
-                    if ($request->hasFile('image')){
-                        $imageValid = Validator::make($request->all(), [
-                            'image' => 'image|mimes:jpeg,png,jpg|max:4196',
-                        ]);
-                        if (!$imageValid->passes()){
-                            return response()->json(['error'=>$imageValid->errors()->all()]); 
-                        }
-
-                        $barang = Barang::where('id_barang', $request->id_barang)->first();
-                        
-                        if (file_exists(public_path()."/".$barang->gambar_barang)){
-                            \File::delete(public_path()."/".$barang->gambar_barang);
-                        }
-
-                        $image = time().'.'.$request->image->extension();
-                        $request->image->move(public_path('images/products'), $image);
-                        // return response()->json(['status'=> 200, 'status_update' => $request->all()]);
-                        $boolImage = Barang::where('id_barang', $request->id_barang)->update([
-                            'gambar_barang' => 'images/products/'.$image,
-                        ]);
-                    }
-                    
-                    if ($validator->passes()) {
-                        
-                        $bool = Barang::where('id_barang', $request->id_barang)->update([
-                            'nama_barang' => $request->nama,
-                            'stok_barang' => $request->stok,
-                            'harga_barang' => $request->price,
-                            'deskripsi_barang' => $request->deskripsi,
-                            'nama_kategori' => $request->kategori,
-                            'berat_barang' => $request->berat,
-                        ]);
-
-                        $barang = Barang::where('id_barang', $request->id_barang)->first();
-                        
-                        return response()->json(['status'=> 200, 'status_update' => $barang, 'img_update_status' => $boolImage]);
-                    }
-                
-                    return response()->json(['error'=>$validator->errors()->all()]);    
-                }catch (ModelNotFoundException $exception) {
-                    
-                    return back()->withError($exception->getMessage())->withInput();
+                    return response()->json(['status'=> 200, 'status_update' => $barang, 'img_update_status' => $boolImage]);
                 }
+            
+                return response()->json(['error'=>$validator->errors()->all()]);    
+            }catch (ModelNotFoundException $exception) {
+                
+                return back()->withError($exception->getMessage())->withInput();
             }
         }
+    }
 
     // ajax
     public function changeStatusDone(Request $request){
@@ -442,6 +446,102 @@ class AdminController extends Controller
                     'status' => $bool,
                 ], 200);
                 
+            }catch (ModelNotFoundException $exception) {
+                
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        }
+    }
+
+    // ajax
+    public function changeMainImage(Request $request){
+        if ($request->ajax()){
+            try {
+                $barang = Barang::where('id_barang', $request->id_barang)->first();
+                $gambar_barang = GambarBarang::where('id_gambar_barang', $request->id_gambar_barang)->first();
+
+                $temp = $barang->gambar_barang;
+
+                $barang->update([
+                    'gambar_barang' => $gambar_barang->gambar_barang,
+                ]);
+
+                $gambar_barang->update([
+                    'gambar_barang' => $temp,
+                ]);
+                
+                return response()->json([
+                    'status' => 200,
+                    'data' => [
+                        'gambar_barang' => $barang->gambar_barang,
+                        'id_gb' => $request->id_gambar_barang,
+                        'gambar_barang_lama' => $gambar_barang->gambar_barang,
+                    ]
+                ], 200);
+                
+            }catch (ModelNotFoundException $exception) {
+                
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        }
+    }
+
+    // ajax
+    public function deleteImage(Request $request){
+        if ($request->ajax()){
+            try {                
+                $gambar_barang = GambarBarang::where('id_gambar_barang', $request->id_gambar_barang)->first();
+                    
+                if (file_exists(public_path()."/".$gambar_barang->gambar_barang)){
+                    \File::delete(public_path()."/".$gambar_barang->gambar_barang);
+                }
+
+                $gambar_barang->delete();
+                
+                return response()->json([
+                    'status' => 200,
+                ], 200);
+
+            }catch (ModelNotFoundException $exception) {
+                
+                return back()->withError($exception->getMessage())->withInput();
+            }
+        }
+    }
+
+    // ajax
+    public function addImage(Request $request){
+        if ($request->ajax()){
+            try {
+                $validator = Validator::make($request->all(), [
+                    'id_barang' => 'required',
+                    'image' => 'required|image|mimes:jpeg,png,jpg|max:4196',
+                ]);
+                
+                if ($validator->passes()){
+                    $imageValid = Validator::make($request->all(), [
+                        
+                    ]);
+
+                    $image = time().'.'.$request->image->extension();
+                    $request->image->move(public_path('images/products'), $image);
+                    // return response()->json(['status'=> 200, 'status_update' => $request->all()]);
+                    $gb = GambarBarang::create([
+                        'gambar_barang' => 'images/products/'.$image,
+                        'id_barang' => $request->id_barang,
+                    ]);
+
+                    return response()->json([
+                        'status'=> 200,
+                        'data' =>[
+                            'gambar_barang' => 'images/products/'.$image,
+                            'id_barang' => $request->id_barang,
+                            'id_gambar_barang' => $gb->id_gambar_barang,
+                        ]
+                    ]);
+                }
+            
+                return response()->json(['error'=>$validator->errors()->all()]);    
             }catch (ModelNotFoundException $exception) {
                 
                 return back()->withError($exception->getMessage())->withInput();

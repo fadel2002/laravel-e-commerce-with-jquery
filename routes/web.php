@@ -59,6 +59,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/change-status-done', [AdminController::class, 'changeStatusDone'])->name('admin.change-status-done'); 
     Route::get('/admin/export-transaksi', [AdminController::class, 'exportTransaksi'])->name('admin.export-transaksi'); 
     Route::get('/admin/get-user-location', [AdminController::class, 'getUserLocation'])->name('admin.get-user-location'); 
+    Route::post('/admin/change-main-image', [AdminController::class, 'changeMainImage'])->name('admin.change-main-image'); 
+    Route::post('/admin/delete-image', [AdminController::class, 'deleteImage'])->name('admin.delete-image'); 
+    Route::post('/admin/add-image', [AdminController::class, 'addImage'])->name('admin.add-image'); 
 });
 
 
