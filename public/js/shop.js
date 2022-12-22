@@ -161,6 +161,7 @@ $(document).ready(function () {
                 harga: data[4],
             },
             success: function (datas) {
+                data = datas.data;
                 if (datas.status != 200) {
                     // console.log(datas.status);
                     swal({
