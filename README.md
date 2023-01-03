@@ -9,6 +9,8 @@
 1. cmd `npm install sweetalert --save`
 1. cmd `php artisan migrate:refresh --seed`
 1. cmd `composer require psr/simple-cache:2.0 maatwebsite/excel` dan melihat dokumentasi berikut https://docs.laravel-excel.com/3.1/getting-started/installation.html
+1. `https://beyondco.de/docs/laravel-websockets/getting-started/installation`
+1. cmd `composer require beyondcode/laravel-websockets`
 1. cmd `composer require pusher/pusher-php-server:7.0.2`
 
 ## Cara nge run
