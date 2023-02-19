@@ -28,7 +28,7 @@ pusher/pusher-php-server versi 7.2 masih eror sehingga tidak bisa melakukan list
 ```
 APP_NAME=Laravel
 APP_ENV=local
-APP_KEY=base64:XZLLIDbqaabYX6f3w9vyqe+CDCFuCNPg0oFeF0CKoyQ=
+APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost
 
@@ -59,8 +59,8 @@ REDIS_PORT=6379
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
-MAIL_USERNAME=b988d852769a98
-MAIL_PASSWORD=4e3926b6002dd0
+MAIL_USERNAME=*mailtrap_username*
+MAIL_PASSWORD=*mailtrap_password*
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="hello@example.com"
 MAIL_FROM_NAME="${APP_NAME}"
